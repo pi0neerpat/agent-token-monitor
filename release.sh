@@ -40,7 +40,7 @@ if [[ "$SIGNING_MODE" != "test" && "$SIGNING_MODE" != "sandbox" && "$SIGNING_MOD
 fi
 
 if [[ "$SIGNING_MODE" == "release" ]]; then
-    for required_var in APPLE_IDENTITY APPLE_ID APPLE_ID_PASSWORD APPLE_TEAM_ID; do
+    for required_var in APP_VERSION APPLE_IDENTITY APPLE_ID APPLE_ID_PASSWORD APPLE_TEAM_ID; do
         if [[ -z "${!required_var:-}" ]]; then
             echo "Missing required environment variable for release signing: $required_var"
             exit 1
@@ -49,6 +49,12 @@ if [[ "$SIGNING_MODE" == "release" ]]; then
 fi
 
 echo "Preparing release build ($SIGNING_MODE)..."
+if [[ -n "$APP_VERSION" ]]; then
+    echo "Using app version: $APP_VERSION"
+else
+    CURRENT_VERSION=$(/usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "$SCRIPT_DIR/Info.plist")
+    echo "Using Info.plist version: $CURRENT_VERSION"
+fi
 
 /bin/chmod -R u+w "$DIST_DIR" 2>/dev/null || true
 /bin/rm -rf "$APP_DIR" "$DMG_PATH" "$RW_DMG_PATH" "$STAGING_DIR"
