@@ -284,6 +284,12 @@ final class UsageService {
         return formatter
     }()
     private let logger = DiagnosticsLogger.shared
+    private let session: URLSession = {
+        let configuration = URLSessionConfiguration.ephemeral
+        configuration.requestCachePolicy = .reloadIgnoringLocalCacheData
+        configuration.urlCache = nil
+        return URLSession(configuration: configuration)
+    }()
 
     @discardableResult
     func fetchUsage(completion: @escaping (Result<ClaudeUsageResponse, Error>) -> Void) -> URLSessionDataTask? {
@@ -313,12 +319,13 @@ final class UsageService {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.timeoutInterval = 10
+        request.cachePolicy = .reloadIgnoringLocalCacheData
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("ClaudeTokenMeter/1.0", forHTTPHeaderField: "User-Agent")
         request.setValue("Bearer \(token.accessToken)", forHTTPHeaderField: "Authorization")
         request.setValue("oauth-2025-04-20", forHTTPHeaderField: "anthropic-beta")
 
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+        let task = session.dataTask(with: request) { data, response, error in
             if let error {
                 self.logger.log("Network error: \(error.localizedDescription)")
                 completion(.failure(AppError.networkFailure(error.localizedDescription)))
@@ -340,6 +347,11 @@ final class UsageService {
             do {
                 let usage = try JSONDecoder().decode(ClaudeUsageResponse.self, from: data)
                 self.logger.log("Usage fetch succeeded")
+                self.logger.log(self.describeUsageResponse(usage))
+                if ProcessInfo.processInfo.environment["CLAUDE_TOKEN_METER_DEBUG_RESPONSE"] == "1",
+                   let rawBody = String(data: data, encoding: .utf8) {
+                    self.logger.log("Usage response body: \(rawBody)")
+                }
                 completion(.success(usage))
             } catch {
                 self.logger.log("JSON decode failed: \(error.localizedDescription)")
@@ -452,6 +464,22 @@ final class UsageService {
             return false
         }
         return Self.releaseAllowedHosts.contains(host)
+    }
+
+    private func describeUsageResponse(_ usage: ClaudeUsageResponse) -> String {
+        func limitSummary(_ limit: ClaudeUsageResponse.RateLimit?) -> String {
+            guard let limit else { return "missing" }
+            let utilization = limit.utilization.map { String($0) } ?? "nil"
+            let resetsAt = limit.resets_at ?? "nil"
+            return "utilization=\(utilization), resets_at=\(resetsAt)"
+        }
+
+        return [
+            "Decoded usage response:",
+            "five_hour[\(limitSummary(usage.five_hour))]",
+            "seven_day[\(limitSummary(usage.seven_day))]",
+            "seven_day_sonnet[\(limitSummary(usage.seven_day_sonnet))]"
+        ].joined(separator: " ")
     }
 
     private func parseOAuthTokens(from data: Data, sourceLabel: String) -> OAuthTokens? {
