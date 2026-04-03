@@ -42,31 +42,6 @@ jobs:
           echo "app_version=$APP_VERSION" >> "$GITHUB_OUTPUT"
         shell: bash
 
-      - name: Commit version bump and tag release
-        run: |
-          set -euo pipefail
-
-          TAG="v${APP_VERSION}"
-
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-
-          if ! git diff --quiet -- Info.plist; then
-            git add Info.plist
-            git commit -m "Release ${APP_VERSION}"
-            git push origin HEAD:${{ github.ref_name }}
-          fi
-
-          if git rev-parse "$TAG" >/dev/null 2>&1; then
-            echo "Tag $TAG already exists locally."
-          elif git ls-remote --tags origin "refs/tags/$TAG" | grep -q "$TAG"; then
-            git fetch --tags origin
-          else
-            git tag -a "$TAG" -m "Release ${APP_VERSION}"
-            git push origin "$TAG"
-          fi
-        shell: bash
-
       - name: Import Apple Developer ID Certificate
         run: |
           set -euo pipefail
