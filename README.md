@@ -1,16 +1,33 @@
-# Claude Token Meter
+<h1 align="center">Claude Token Meter</h1>
 
-Monitor your Claude API usage in the macOS menu bar.
 
+
+
+<p align="center">
+  <a href="./LICENSE">
+    <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT">
+  </a>
+  <br/>
+Context switching costs are real. 
+Now you can monitor your Claude API usage in the macOS menu bar.
+</p>
+
+<p align="center">
 <img src="./screenshot-1.png" alt="Claude Token Meter in action" width="500">
+</p>
+
+## Is it safe?
+
+- Uses your Claude OAuth token directly from Keychain. No additional copies of your token are stored.
+- Sandboxed app.
+- Only makes API calls to Anthropic's production API.
+- Build it locally if you're unsure.
 
 ## Install
 
 **Option 1: Download from Releases**
 
 Install the `.dmg` from [Releases](https://github.com/pi0neerpat/claude-token-meter/releases)
-
-
 
 **Option 2: Build Locally**
 
