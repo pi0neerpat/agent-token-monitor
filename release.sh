@@ -6,10 +6,24 @@ DIST_DIR="$SCRIPT_DIR/dist"
 APP_NAME="Claude Token Meter.app"
 APP_DIR="$DIST_DIR/$APP_NAME"
 DMG_PATH="$DIST_DIR/ClaudeTokenMeter.dmg"
+RW_DMG_PATH="$DIST_DIR/ClaudeTokenMeter-temp.dmg"
 STAGING_DIR="$DIST_DIR/dmg-root"
 MODULE_CACHE="$SCRIPT_DIR/.swift-module-cache"
 ICON_SRC="$SCRIPT_DIR/app-icon.png"
-MENU_BAR_ICON_SRC="$SCRIPT_DIR/clawd.png"
+MENU_BAR_ICON_SRC="$SCRIPT_DIR/assets/clawd.png"
+DMG_BACKGROUND_SRC="$SCRIPT_DIR/build/dmg-background.png"
+BUILD_DIR="$SCRIPT_DIR/.build"
+ARM64_BIN="$BUILD_DIR/claude-token-meter-arm64"
+X64_BIN="$BUILD_DIR/claude-token-meter-x86_64"
+UNIVERSAL_BIN="$APP_DIR/Contents/MacOS/claude-token-meter"
+MACOS_TARGET="13.0"
+VOLUME_NAME="Claude Token Meter"
+DMG_WIDTH=660
+DMG_HEIGHT=400
+APP_ICON_X=180
+APP_ICON_Y=170
+APPLICATIONS_ICON_X=480
+APPLICATIONS_ICON_Y=170
 SIGNING_MODE="${1:-test}"
 APP_VERSION="${APP_VERSION:-}"
 APPLE_IDENTITY="${APPLE_IDENTITY:-}"
@@ -36,8 +50,9 @@ fi
 
 echo "Preparing release build ($SIGNING_MODE)..."
 
-rm -rf "$APP_DIR" "$DMG_PATH" "$STAGING_DIR"
-mkdir -p "$APP_DIR/Contents/MacOS" "$APP_DIR/Contents/Resources" "$STAGING_DIR" "$MODULE_CACHE"
+/bin/chmod -R u+w "$DIST_DIR" 2>/dev/null || true
+/bin/rm -rf "$APP_DIR" "$DMG_PATH" "$RW_DMG_PATH" "$STAGING_DIR"
+mkdir -p "$APP_DIR/Contents/MacOS" "$APP_DIR/Contents/Resources" "$STAGING_DIR" "$MODULE_CACHE" "$BUILD_DIR"
 
 cp "$SCRIPT_DIR/Info.plist" "$APP_DIR/Contents/"
 cp "$MENU_BAR_ICON_SRC" "$APP_DIR/Contents/Resources/clawd.png"
@@ -99,10 +114,22 @@ xcrun actool \
 swiftc \
     -module-cache-path "$MODULE_CACHE" \
     "$SCRIPT_DIR/ClaudeTokenMeter.swift" \
-    -o "$APP_DIR/Contents/MacOS/claude-token-meter" \
+    -o "$ARM64_BIN" \
+    -target "arm64-apple-macos${MACOS_TARGET}" \
     -framework Cocoa \
     -framework Foundation \
     -framework Security
+
+swiftc \
+    -module-cache-path "$MODULE_CACHE" \
+    "$SCRIPT_DIR/ClaudeTokenMeter.swift" \
+    -o "$X64_BIN" \
+    -target "x86_64-apple-macos${MACOS_TARGET}" \
+    -framework Cocoa \
+    -framework Foundation \
+    -framework Security
+
+lipo -create -output "$UNIVERSAL_BIN" "$ARM64_BIN" "$X64_BIN"
 
 if [[ -n "$APP_VERSION" ]]; then
     /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $APP_VERSION" "$APP_DIR/Contents/Info.plist"
@@ -124,13 +151,66 @@ else
 fi
 
 cp -R "$APP_DIR" "$STAGING_DIR/"
+mkdir -p "$STAGING_DIR/.background"
+cp "$DMG_BACKGROUND_SRC" "$STAGING_DIR/.background/background.png"
 
 hdiutil create \
-    -volname "Claude Token Meter" \
-    -srcfolder "$STAGING_DIR" \
+    -volname "$VOLUME_NAME" \
     -ov \
-    -format UDZO \
-    "$DMG_PATH"
+    -fs HFS+ \
+    -size 200m \
+    "$RW_DMG_PATH"
+
+ATTACH_OUTPUT=$(hdiutil attach -readwrite -noverify -noautoopen "$RW_DMG_PATH")
+DEVICE_NAME=$(printf '%s\n' "$ATTACH_OUTPUT" | awk '/Apple_HFS/ {print $1; exit}')
+VOLUME_PATH=$(printf '%s\n' "$ATTACH_OUTPUT" | awk '/Apple_HFS/ {$1=$2=""; sub(/^[ \t]+/, ""); print; exit}')
+
+if [[ -z "$DEVICE_NAME" || -z "$VOLUME_PATH" ]]; then
+    echo "Failed to determine mounted DMG device or volume path"
+    printf '%s\n' "$ATTACH_OUTPUT"
+    exit 1
+fi
+
+/bin/cp -R "$APP_DIR" "$VOLUME_PATH/"
+/bin/mkdir -p "$VOLUME_PATH/.background"
+/bin/cp "$DMG_BACKGROUND_SRC" "$VOLUME_PATH/.background/background.png"
+ln -s /Applications "$VOLUME_PATH/Applications"
+
+osascript <<EOF
+tell application "Finder"
+    tell disk "$VOLUME_NAME"
+        open
+        delay 1
+        set current view of container window to icon view
+        set toolbar visible of container window to false
+        set statusbar visible of container window to false
+        set the bounds of container window to {100, 100, $((100 + DMG_WIDTH)), $((100 + DMG_HEIGHT))}
+        set viewOptions to the icon view options of container window
+        set arrangement of viewOptions to not arranged
+        set icon size of viewOptions to 160
+        set background picture of viewOptions to file ".background:background.png"
+        set position of item "$APP_NAME" of container window to {$APP_ICON_X, $APP_ICON_Y}
+        set position of item "Applications" of container window to {$APPLICATIONS_ICON_X, $APPLICATIONS_ICON_Y}
+        update without registering applications
+        delay 2
+        close
+        open
+        update without registering applications
+        delay 2
+        close
+    end tell
+end tell
+EOF
+
+/usr/bin/chflags hidden "$VOLUME_PATH/.background" 2>/dev/null || true
+/usr/bin/chflags hidden "$VOLUME_PATH/.fseventsd" 2>/dev/null || true
+
+chmod -Rf go-w "$VOLUME_PATH" || true
+sync
+hdiutil detach "$DEVICE_NAME"
+
+hdiutil convert "$RW_DMG_PATH" -format UDZO -imagekey zlib-level=9 -o "$DMG_PATH"
+rm -f "$RW_DMG_PATH"
 
 if [[ "$SIGNING_MODE" == "release" ]]; then
     codesign \

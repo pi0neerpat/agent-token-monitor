@@ -4,22 +4,38 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 APP="$HOME/Applications/Claude Token Meter.app"
 ICON_SRC="$SCRIPT_DIR/app-icon.png"
-MENU_BAR_ICON_SRC="$SCRIPT_DIR/clawd.png"
+MENU_BAR_ICON_SRC="$SCRIPT_DIR/assets/clawd.png"
+BUILD_DIR="$SCRIPT_DIR/.build"
+ARM64_BIN="$BUILD_DIR/claude-token-meter-arm64"
+X64_BIN="$BUILD_DIR/claude-token-meter-x86_64"
+UNIVERSAL_BIN="$APP/Contents/MacOS/claude-token-meter"
+MACOS_TARGET="13.0"
 
 # Create .app bundle structure
 mkdir -p "$APP/Contents/MacOS"
 mkdir -p "$APP/Contents/Resources"
+mkdir -p "$BUILD_DIR"
 
 # Copy Info.plist
 cp "$SCRIPT_DIR/Info.plist" "$APP/Contents/"
 cp "$MENU_BAR_ICON_SRC" "$APP/Contents/Resources/clawd.png"
 
-# Compile Swift source
+# Compile universal Swift binary
 swiftc "$SCRIPT_DIR/ClaudeTokenMeter.swift" \
-    -o "$APP/Contents/MacOS/claude-token-meter" \
+    -o "$ARM64_BIN" \
+    -target "arm64-apple-macos${MACOS_TARGET}" \
     -framework Cocoa \
     -framework Foundation \
     -framework Security
+
+swiftc "$SCRIPT_DIR/ClaudeTokenMeter.swift" \
+    -o "$X64_BIN" \
+    -target "x86_64-apple-macos${MACOS_TARGET}" \
+    -framework Cocoa \
+    -framework Foundation \
+    -framework Security
+
+lipo -create -output "$UNIVERSAL_BIN" "$ARM64_BIN" "$X64_BIN"
 
 # Compile app icon asset catalog
 ASSET_ROOT=$(mktemp -d)
@@ -82,4 +98,4 @@ rm -rf "$ASSET_ROOT"
 # Ad-hoc codesign
 codesign --force --sign - --entitlements "$SCRIPT_DIR/entitlements.plist" "$APP"
 
-echo "Built and signed Claude Token Meter.app at $APP"
+echo "Built and signed universal Claude Token Meter.app at $APP"

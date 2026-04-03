@@ -556,7 +556,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func setupMenu() {
         errorItem.isHidden = true
-        logPathItem.title = "Log: \(logger.logURL.path)"
+        logPathItem.title = "Log: \(logger.logURL.lastPathComponent)"
         menu.addItem(sessionItem)
         menu.addItem(weeklyItem)
         menu.addItem(sonnetItem)
