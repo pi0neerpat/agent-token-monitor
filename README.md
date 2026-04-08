@@ -39,6 +39,3 @@ Click the menu bar icon to see your usage. The icon color shows your status:
 
 <img src="./screenshot-2.png" alt="Claude Token Meter in action" width="500">
 
-Click the menu for more details and refresh controls.
-
-<img src="./screenshot-3.png" alt="Claude Token Meter in action" width="500">
