@@ -17,6 +17,8 @@ ARM64_BIN="$BUILD_DIR/claude-token-meter-arm64"
 X64_BIN="$BUILD_DIR/claude-token-meter-x86_64"
 UNIVERSAL_BIN="$APP_DIR/Contents/MacOS/claude-token-meter"
 MACOS_TARGET="13.0"
+BUNDLE_ID="com.scribular.claude-token-meter"
+DESIGNATED_REQUIREMENT="=designated => identifier \"$BUNDLE_ID\""
 VOLUME_NAME="Claude Token Meter"
 DMG_WIDTH=660
 DMG_HEIGHT=400
@@ -151,9 +153,18 @@ if [[ "$SIGNING_MODE" == "release" ]]; then
         --entitlements "$SCRIPT_DIR/entitlements.plist" \
         "$APP_DIR"
 elif [[ "$SIGNING_MODE" == "sandbox" ]]; then
-    codesign --force --sign - --entitlements "$SCRIPT_DIR/entitlements.plist" "$APP_DIR"
+    codesign \
+        --force \
+        --sign - \
+        --requirements "$DESIGNATED_REQUIREMENT" \
+        --entitlements "$SCRIPT_DIR/entitlements.plist" \
+        "$APP_DIR"
 else
-    codesign --force --sign - "$APP_DIR"
+    codesign \
+        --force \
+        --sign - \
+        --requirements "$DESIGNATED_REQUIREMENT" \
+        "$APP_DIR"
 fi
 
 cp -R "$APP_DIR" "$STAGING_DIR/"

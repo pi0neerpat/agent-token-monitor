@@ -1,0 +1,309 @@
+// !$*UTF8*$!
+{
+	objectVersion = 56;
+	classes = {
+	};
+	archiveVersion = 1;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A10000010000000000000001 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A10001010000000000000001 /* Cocoa.framework */; };
+		A10000020000000000000001 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A10001020000000000000001 /* Security.framework */; };
+		A10000030000000000000001 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002010000000000000001 /* AppDelegate.swift */; };
+		A10000040000000000000001 /* ClaudeProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002020000000000000001 /* ClaudeProvider.swift */; };
+		A10000050000000000000001 /* ClaudeTokenMeter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002030000000000000001 /* ClaudeTokenMeter.swift */; };
+		A10000060000000000000001 /* CodexAuthAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002040000000000000001 /* CodexAuthAccess.swift */; };
+		A10000070000000000000001 /* CodexOAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002050000000000000001 /* CodexOAuth.swift */; };
+		A10000080000000000000001 /* CodexRPC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002060000000000000001 /* CodexRPC.swift */; };
+		A10000090000000000000001 /* CodexStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002070000000000000001 /* CodexStatus.swift */; };
+		A100000A0000000000000001 /* CombinedStatusController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002080000000000000001 /* CombinedStatusController.swift */; };
+		A100000B0000000000000001 /* CoreTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002090000000000000001 /* CoreTypes.swift */; };
+		A100000C0000000000000001 /* MeterUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A100020A0000000000000001 /* MeterUI.swift */; };
+		A100000D0000000000000001 /* ProviderClients.swift in Sources */ = {isa = PBXBuildFile; fileRef = A100020B0000000000000001 /* ProviderClients.swift */; };
+		A100000E0000000000000001 /* ProviderStatusController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A100020C0000000000000001 /* ProviderStatusController.swift */; };
+		A100000F0000000000000001 /* SupportUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = A100020D0000000000000001 /* SupportUtilities.swift */; };
+		A10000100000000000000001 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A10003010000000000000001 /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		A10001010000000000000001 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		A10001020000000000000001 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		A10002010000000000000001 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		A10002020000000000000001 /* ClaudeProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaudeProvider.swift; sourceTree = "<group>"; };
+		A10002030000000000000001 /* ClaudeTokenMeter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaudeTokenMeter.swift; sourceTree = "<group>"; };
+		A10002040000000000000001 /* CodexAuthAccess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodexAuthAccess.swift; sourceTree = "<group>"; };
+		A10002050000000000000001 /* CodexOAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodexOAuth.swift; sourceTree = "<group>"; };
+		A10002060000000000000001 /* CodexRPC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodexRPC.swift; sourceTree = "<group>"; };
+		A10002070000000000000001 /* CodexStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodexStatus.swift; sourceTree = "<group>"; };
+		A10002080000000000000001 /* CombinedStatusController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinedStatusController.swift; sourceTree = "<group>"; };
+		A10002090000000000000001 /* CoreTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreTypes.swift; sourceTree = "<group>"; };
+		A100020A0000000000000001 /* MeterUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeterUI.swift; sourceTree = "<group>"; };
+		A100020B0000000000000001 /* ProviderClients.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProviderClients.swift; sourceTree = "<group>"; };
+		A100020C0000000000000001 /* ProviderStatusController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProviderStatusController.swift; sourceTree = "<group>"; };
+		A100020D0000000000000001 /* SupportUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportUtilities.swift; sourceTree = "<group>"; };
+		A10003010000000000000001 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A10003020000000000000001 /* clawd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = assets/clawd.png; sourceTree = "<group>"; };
+		A10003030000000000000001 /* codex-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = assets/codex-icon.png; sourceTree = "<group>"; };
+		A10004010000000000000001 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A10004020000000000000001 /* entitlements.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = entitlements.plist; sourceTree = "<group>"; };
+		A10005010000000000000001 /* Claude Token Meter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Claude Token Meter.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A10006010000000000000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000010000000000000001 /* Cocoa.framework in Frameworks */,
+				A10000020000000000000001 /* Security.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A10007010000000000000001 = {
+			isa = PBXGroup;
+			children = (
+				A10007020000000000000001 /* ClaudeTokenMeter */,
+				A10007030000000000000001 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A10007020000000000000001 /* ClaudeTokenMeter */ = {
+			isa = PBXGroup;
+			children = (
+				A10002010000000000000001 /* AppDelegate.swift */,
+				A10002020000000000000001 /* ClaudeProvider.swift */,
+				A10002030000000000000001 /* ClaudeTokenMeter.swift */,
+				A10002040000000000000001 /* CodexAuthAccess.swift */,
+				A10002050000000000000001 /* CodexOAuth.swift */,
+				A10002060000000000000001 /* CodexRPC.swift */,
+				A10002070000000000000001 /* CodexStatus.swift */,
+				A10002080000000000000001 /* CombinedStatusController.swift */,
+				A10002090000000000000001 /* CoreTypes.swift */,
+				A100020A0000000000000001 /* MeterUI.swift */,
+				A100020B0000000000000001 /* ProviderClients.swift */,
+				A100020C0000000000000001 /* ProviderStatusController.swift */,
+				A100020D0000000000000001 /* SupportUtilities.swift */,
+				A10003010000000000000001 /* Assets.xcassets */,
+				A10003020000000000000001 /* clawd.png */,
+				A10003030000000000000001 /* codex-icon.png */,
+				A10004010000000000000001 /* Info.plist */,
+				A10004020000000000000001 /* entitlements.plist */,
+				A10007040000000000000001 /* Frameworks */,
+			);
+			name = ClaudeTokenMeter;
+			sourceTree = "<group>";
+		};
+		A10007030000000000000001 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A10005010000000000000001 /* Claude Token Meter.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A10007040000000000000001 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A10001010000000000000001 /* Cocoa.framework */,
+				A10001020000000000000001 /* Security.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A10008010000000000000001 /* Claude Token Meter */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A1000A020000000000000001 /* Build configuration list for PBXNativeTarget "Claude Token Meter" */;
+			buildPhases = (
+				A10009010000000000000001 /* Sources */,
+				A10006010000000000000001 /* Frameworks */,
+				A10009020000000000000001 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Claude Token Meter";
+			productName = "Claude Token Meter";
+			productReference = A10005010000000000000001 /* Claude Token Meter.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A1000B010000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1620;
+				LastUpgradeCheck = 1620;
+				TargetAttributes = {
+					A10008010000000000000001 = {
+						CreatedOnToolsVersion = 16.2;
+					};
+				};
+			};
+			buildConfigurationList = A1000A010000000000000001 /* Build configuration list for PBXProject "ClaudeTokenMeter" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A10007010000000000000001;
+			productRefGroup = A10007030000000000000001 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A10008010000000000000001 /* Claude Token Meter */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A10009020000000000000001 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000100000000000000001 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A10009010000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000030000000000000001 /* AppDelegate.swift in Sources */,
+				A10000040000000000000001 /* ClaudeProvider.swift in Sources */,
+				A10000050000000000000001 /* ClaudeTokenMeter.swift in Sources */,
+				A10000060000000000000001 /* CodexAuthAccess.swift in Sources */,
+				A10000070000000000000001 /* CodexOAuth.swift in Sources */,
+				A10000080000000000000001 /* CodexRPC.swift in Sources */,
+				A10000090000000000000001 /* CodexStatus.swift in Sources */,
+				A100000A0000000000000001 /* CombinedStatusController.swift in Sources */,
+				A100000B0000000000000001 /* CoreTypes.swift in Sources */,
+				A100000C0000000000000001 /* MeterUI.swift in Sources */,
+				A100000D0000000000000001 /* ProviderClients.swift in Sources */,
+				A100000E0000000000000001 /* ProviderStatusController.swift in Sources */,
+				A100000F0000000000000001 /* SupportUtilities.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		A1000C010000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		A1000C020000000000000001 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		A1000C030000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Manual;
+				CODE_SIGNING_ALLOWED = NO;
+				COMPRESS_PNG_FILES = NO;
+				CURRENT_PROJECT_VERSION = 1.0.2;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = NO;
+				EXECUTABLE_NAME = claude-token-meter;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0.2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.scribular.claude-token-meter;
+				PRODUCT_MODULE_NAME = ClaudeTokenMeter;
+				PRODUCT_NAME = "Claude Token Meter";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		A1000C040000000000000001 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Manual;
+				CODE_SIGNING_ALLOWED = NO;
+				COMPRESS_PNG_FILES = NO;
+				CURRENT_PROJECT_VERSION = 1.0.2;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = NO;
+				EXECUTABLE_NAME = claude-token-meter;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0.2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.scribular.claude-token-meter;
+				PRODUCT_MODULE_NAME = ClaudeTokenMeter;
+				PRODUCT_NAME = "Claude Token Meter";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A1000A010000000000000001 /* Build configuration list for PBXProject "ClaudeTokenMeter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A1000C010000000000000001 /* Debug */,
+				A1000C020000000000000001 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A1000A020000000000000001 /* Build configuration list for PBXNativeTarget "Claude Token Meter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A1000C030000000000000001 /* Debug */,
+				A1000C040000000000000001 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A1000B010000000000000001 /* Project object */;
+}

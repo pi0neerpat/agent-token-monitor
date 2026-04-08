@@ -2,35 +2,44 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-APP="$HOME/Applications/Claude Token Meter.app"
+APP="$SCRIPT_DIR/dist/Claude Token Meter.app"
 ICON_SRC="$SCRIPT_DIR/app-icon.png"
 MENU_BAR_ICON_SRC="$SCRIPT_DIR/assets/clawd.png"
+CODEX_ICON_SRC="$SCRIPT_DIR/assets/codex-icon.png"
 BUILD_DIR="$SCRIPT_DIR/.build"
+MODULE_CACHE_DIR="$BUILD_DIR/module-cache"
 ARM64_BIN="$BUILD_DIR/claude-token-meter-arm64"
 X64_BIN="$BUILD_DIR/claude-token-meter-x86_64"
 UNIVERSAL_BIN="$APP/Contents/MacOS/claude-token-meter"
+SWIFT_SOURCES=("$SCRIPT_DIR"/*.swift)
 MACOS_TARGET="13.0"
+BUNDLE_ID="com.scribular.claude-token-meter"
+DESIGNATED_REQUIREMENT="=designated => identifier \"$BUNDLE_ID\""
 
 # Create .app bundle structure
 mkdir -p "$APP/Contents/MacOS"
 mkdir -p "$APP/Contents/Resources"
 mkdir -p "$BUILD_DIR"
+mkdir -p "$MODULE_CACHE_DIR"
 
 # Copy Info.plist
 cp "$SCRIPT_DIR/Info.plist" "$APP/Contents/"
 cp "$MENU_BAR_ICON_SRC" "$APP/Contents/Resources/clawd.png"
+cp "$CODEX_ICON_SRC" "$APP/Contents/Resources/codex-icon.png"
 
 # Compile universal Swift binary
-swiftc "$SCRIPT_DIR/ClaudeTokenMeter.swift" \
+swiftc "${SWIFT_SOURCES[@]}" \
     -o "$ARM64_BIN" \
     -target "arm64-apple-macos${MACOS_TARGET}" \
+    -module-cache-path "$MODULE_CACHE_DIR" \
     -framework Cocoa \
     -framework Foundation \
     -framework Security
 
-swiftc "$SCRIPT_DIR/ClaudeTokenMeter.swift" \
+swiftc "${SWIFT_SOURCES[@]}" \
     -o "$X64_BIN" \
     -target "x86_64-apple-macos${MACOS_TARGET}" \
+    -module-cache-path "$MODULE_CACHE_DIR" \
     -framework Cocoa \
     -framework Foundation \
     -framework Security
@@ -95,7 +104,13 @@ xcrun actool \
 
 rm -rf "$ASSET_ROOT"
 
-# Ad-hoc codesign
-codesign --force --sign - --entitlements "$SCRIPT_DIR/entitlements.plist" "$APP"
+# Ad-hoc codesign with a stable designated requirement so Keychain approvals
+# can continue to match this app across local rebuilds.
+codesign \
+    --force \
+    --sign - \
+    --requirements "$DESIGNATED_REQUIREMENT" \
+    --entitlements "$SCRIPT_DIR/entitlements.plist" \
+    "$APP"
 
 echo "Built and signed universal Claude Token Meter.app at $APP"

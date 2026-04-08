@@ -1,27 +1,16 @@
-<h1 align="center">Claude Token Meter</h1>
-
-
-
+<h1 align="center">Agent Token Monitor</h1>
 
 <p align="center">
   <a href="./LICENSE">
     <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT">
   </a>
   <br/>
-Context switching costs are real. 
-Now you can monitor your Claude API usage in the macOS menu bar.
+Monitor your Claude and Codex subs with a lightweight macOS taskbar item.
 </p>
 
 <p align="center">
-<img src="./screenshot-1.png" alt="Claude Token Meter in action" width="500">
+<img src="./screenshot-4.png" alt="Claude Token Meter in action" width="500">
 </p>
-
-## Is it safe?
-
-- Uses your Claude OAuth token directly from Keychain. No additional copies of your token are stored.
-- Sandboxed app.
-- Only makes API calls to Anthropic's production API.
-- Build it locally if you're unsure.
 
 ## Install
 
@@ -38,6 +27,8 @@ Install the `.dmg` from [Releases](https://github.com/pi0neerpat/claude-token-me
 You'll need to grant the app permission to access your Claude Oauth token. 
 
 <img src="./permissions.png" alt="Claude Token Meter permissions prompt" width="500">
+
+And for Codex, we only need access to auth.json. Otherwise the app is sandboxed.
 
 ## Usage
 
