@@ -279,7 +279,7 @@ enum CodexOAuthUsageFetcher {
         request.timeoutInterval = 30
         request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Accept")
-        request.setValue("ClaudeTokenMeter", forHTTPHeaderField: "User-Agent")
+        request.setValue("AgentTokenMonitor", forHTTPHeaderField: "User-Agent")
         if let accountId, !accountId.isEmpty {
             request.setValue(accountId, forHTTPHeaderField: "ChatGPT-Account-Id")
         }

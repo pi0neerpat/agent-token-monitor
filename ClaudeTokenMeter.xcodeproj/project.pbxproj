@@ -46,7 +46,7 @@
 		A10003030000000000000001 /* codex-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = assets/codex-icon.png; sourceTree = "<group>"; };
 		A10004010000000000000001 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A10004020000000000000001 /* entitlements.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = entitlements.plist; sourceTree = "<group>"; };
-		A10005010000000000000001 /* Claude Token Meter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Claude Token Meter.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A10005010000000000000001 /* Agent Token Monitor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Agent Token Monitor.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,7 +99,7 @@
 		A10007030000000000000001 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A10005010000000000000001 /* Claude Token Meter.app */,
+				A10005010000000000000001 /* Agent Token Monitor.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -116,9 +116,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A10008010000000000000001 /* Claude Token Meter */ = {
+		A10008010000000000000001 /* Agent Token Monitor */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A1000A020000000000000001 /* Build configuration list for PBXNativeTarget "Claude Token Meter" */;
+			buildConfigurationList = A1000A020000000000000001 /* Build configuration list for PBXNativeTarget "Agent Token Monitor" */;
 			buildPhases = (
 				A10009010000000000000001 /* Sources */,
 				A10006010000000000000001 /* Frameworks */,
@@ -128,9 +128,9 @@
 			);
 			dependencies = (
 			);
-			name = "Claude Token Meter";
-			productName = "Claude Token Meter";
-			productReference = A10005010000000000000001 /* Claude Token Meter.app */;
+			name = "Agent Token Monitor";
+			productName = "Agent Token Monitor";
+			productReference = A10005010000000000000001 /* Agent Token Monitor.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -161,7 +161,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A10008010000000000000001 /* Claude Token Meter */,
+				A10008010000000000000001 /* Agent Token Monitor */,
 			);
 		};
 /* End PBXProject section */
@@ -237,7 +237,7 @@
 				CURRENT_PROJECT_VERSION = 1.0.2;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = NO;
-				EXECUTABLE_NAME = claude-token-meter;
+				EXECUTABLE_NAME = agent-token-monitor;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -246,9 +246,9 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0.2;
-				PRODUCT_BUNDLE_IDENTIFIER = com.scribular.claude-token-meter;
+				PRODUCT_BUNDLE_IDENTIFIER = com.scribular.agent-token-monitor;
 				PRODUCT_MODULE_NAME = ClaudeTokenMeter;
-				PRODUCT_NAME = "Claude Token Meter";
+				PRODUCT_NAME = "Agent Token Monitor";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -265,7 +265,7 @@
 				CURRENT_PROJECT_VERSION = 1.0.2;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = NO;
-				EXECUTABLE_NAME = claude-token-meter;
+				EXECUTABLE_NAME = agent-token-monitor;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -274,9 +274,9 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0.2;
-				PRODUCT_BUNDLE_IDENTIFIER = com.scribular.claude-token-meter;
+				PRODUCT_BUNDLE_IDENTIFIER = com.scribular.agent-token-monitor;
 				PRODUCT_MODULE_NAME = ClaudeTokenMeter;
-				PRODUCT_NAME = "Claude Token Meter";
+				PRODUCT_NAME = "Agent Token Monitor";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 			};
@@ -294,7 +294,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A1000A020000000000000001 /* Build configuration list for PBXNativeTarget "Claude Token Meter" */ = {
+		A1000A020000000000000001 /* Build configuration list for PBXNativeTarget "Agent Token Monitor" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A1000C030000000000000001 /* Debug */,

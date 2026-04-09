@@ -2,15 +2,15 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-APP="$SCRIPT_DIR/dist/Claude Token Meter.app"
+APP="$SCRIPT_DIR/dist/Agent Token Monitor.app"
 ICON_SRC="$SCRIPT_DIR/app-icon.png"
 MENU_BAR_ICON_SRC="$SCRIPT_DIR/assets/clawd.png"
 CODEX_ICON_SRC="$SCRIPT_DIR/assets/codex-icon.png"
 BUILD_DIR="$SCRIPT_DIR/.build"
-MODULE_CACHE_DIR="$(mktemp -d "${TMPDIR:-/tmp}/claude-token-meter-module-cache.XXXXXX")"
-ARM64_BIN="$BUILD_DIR/claude-token-meter-arm64"
-X64_BIN="$BUILD_DIR/claude-token-meter-x86_64"
-UNIVERSAL_BIN="$APP/Contents/MacOS/claude-token-meter"
+MODULE_CACHE_DIR="$(mktemp -d "${TMPDIR:-/tmp}/agent-token-monitor-module-cache.XXXXXX")"
+ARM64_BIN="$BUILD_DIR/agent-token-monitor-arm64"
+X64_BIN="$BUILD_DIR/agent-token-monitor-x86_64"
+UNIVERSAL_BIN="$APP/Contents/MacOS/agent-token-monitor"
 # Exclude Package.swift (SwiftPM manifest; not app source).
 SWIFT_SOURCES=()
 for f in "$SCRIPT_DIR"/*.swift; do
@@ -19,7 +19,7 @@ for f in "$SCRIPT_DIR"/*.swift; do
   SWIFT_SOURCES+=("$f")
 done
 MACOS_TARGET="13.0"
-BUNDLE_ID="com.scribular.claude-token-meter"
+BUNDLE_ID="com.scribular.agent-token-monitor"
 DESIGNATED_REQUIREMENT="=designated => identifier \"$BUNDLE_ID\""
 
 trap 'rm -rf "$MODULE_CACHE_DIR"' EXIT
@@ -120,4 +120,4 @@ codesign \
     --entitlements "$SCRIPT_DIR/entitlements.plist" \
     "$APP"
 
-echo "Built and signed universal Claude Token Meter.app at $APP"
+echo "Built and signed universal Agent Token Monitor.app at $APP"

@@ -81,7 +81,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let alert = NSAlert()
         alert.messageText = "Enable Codex"
         alert.informativeText = """
-        Claude Token Meter is sandboxed, so macOS requires one-time permission before it can read your Codex credentials. The next panel will ask you to choose your Codex auth file, usually \(authURL.path).
+        Agent Token Monitor is sandboxed, so macOS requires one-time permission before it can read your Codex credentials. The next panel will ask you to choose your Codex auth file, usually \(authURL.path).
 
         The app stores a security-scoped bookmark for that file and only uses it to read Codex usage data.
         """

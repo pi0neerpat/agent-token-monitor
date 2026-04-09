@@ -87,8 +87,8 @@ jobs:
 
       - name: Verify codesigning and Gatekeeper acceptance
         run: |
-          codesign --verify --deep --strict --verbose=2 "dist/Claude Token Meter.app"
-          spctl -a -t open --context context:primary-signature -v "dist/ClaudeTokenMeter.dmg"
+          codesign --verify --deep --strict --verbose=2 "dist/Agent Token Monitor.app"
+          spctl -a -t open --context context:primary-signature -v "dist/AgentTokenMonitor.dmg"
         shell: bash
 
       - name: Commit version bump
@@ -114,8 +114,8 @@ jobs:
       - name: Upload release artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ClaudeTokenMeter-${{ steps.bump-version.outputs.app_version }}-macos
-          path: dist/ClaudeTokenMeter.dmg
+          name: AgentTokenMonitor-${{ steps.bump-version.outputs.app_version }}-macos
+          path: dist/AgentTokenMonitor.dmg
 
       - name: Create or update GitHub release
         env:
@@ -133,7 +133,7 @@ jobs:
             exit 1
           fi
 
-          gh release create "$TAG" "dist/ClaudeTokenMeter.dmg" \
-            --title "Claude Token Meter ${APP_VERSION}" \
+          gh release create "$TAG" "dist/AgentTokenMonitor.dmg" \
+            --title "Agent Token Monitor ${APP_VERSION}" \
             --notes-file "$NOTES_FILE"
         shell: bash

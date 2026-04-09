@@ -3,19 +3,20 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 DIST_DIR="$SCRIPT_DIR/dist"
-APP_NAME="Claude Token Meter.app"
+APP_NAME="Agent Token Monitor.app"
 APP_DIR="$DIST_DIR/$APP_NAME"
-DMG_PATH="$DIST_DIR/ClaudeTokenMeter.dmg"
-RW_DMG_PATH="$DIST_DIR/ClaudeTokenMeter-temp.dmg"
+DMG_PATH="$DIST_DIR/AgentTokenMonitor.dmg"
+RW_DMG_PATH="$DIST_DIR/AgentTokenMonitor-temp.dmg"
 STAGING_DIR="$DIST_DIR/dmg-root"
-MODULE_CACHE="$(mktemp -d "${TMPDIR:-/tmp}/claude-token-meter-module-cache.XXXXXX")"
+MODULE_CACHE="$(mktemp -d "${TMPDIR:-/tmp}/agent-token-monitor-module-cache.XXXXXX")"
 ICON_SRC="$SCRIPT_DIR/app-icon.png"
 MENU_BAR_ICON_SRC="$SCRIPT_DIR/assets/clawd.png"
+CODEX_ICON_SRC="$SCRIPT_DIR/assets/codex-icon.png"
 DMG_BACKGROUND_SRC="$SCRIPT_DIR/build/dmg-background.png"
 BUILD_DIR="$SCRIPT_DIR/.build"
-ARM64_BIN="$BUILD_DIR/claude-token-meter-arm64"
-X64_BIN="$BUILD_DIR/claude-token-meter-x86_64"
-UNIVERSAL_BIN="$APP_DIR/Contents/MacOS/claude-token-meter"
+ARM64_BIN="$BUILD_DIR/agent-token-monitor-arm64"
+X64_BIN="$BUILD_DIR/agent-token-monitor-x86_64"
+UNIVERSAL_BIN="$APP_DIR/Contents/MacOS/agent-token-monitor"
 # Exclude Package.swift (SwiftPM manifest; not app source).
 SWIFT_SOURCES=()
 for f in "$SCRIPT_DIR"/*.swift; do
@@ -24,9 +25,9 @@ for f in "$SCRIPT_DIR"/*.swift; do
   SWIFT_SOURCES+=("$f")
 done
 MACOS_TARGET="13.0"
-BUNDLE_ID="com.scribular.claude-token-meter"
+BUNDLE_ID="com.scribular.agent-token-monitor"
 DESIGNATED_REQUIREMENT="=designated => identifier \"$BUNDLE_ID\""
-VOLUME_NAME="Claude Token Meter"
+VOLUME_NAME="Agent Token Monitor"
 DMG_WIDTH=660
 DMG_HEIGHT=400
 APP_ICON_X=180
@@ -73,6 +74,7 @@ mkdir -p "$APP_DIR/Contents/MacOS" "$APP_DIR/Contents/Resources" "$STAGING_DIR" 
 
 cp "$SCRIPT_DIR/Info.plist" "$APP_DIR/Contents/"
 cp "$MENU_BAR_ICON_SRC" "$APP_DIR/Contents/Resources/clawd.png"
+cp "$CODEX_ICON_SRC" "$APP_DIR/Contents/Resources/codex-icon.png"
 ASSET_ROOT="$DIST_DIR/appicon-assets"
 ASSET_CATALOG_DIR="$ASSET_ROOT/Assets.xcassets"
 APPICONSET_DIR="$ASSET_CATALOG_DIR/AppIcon.appiconset"

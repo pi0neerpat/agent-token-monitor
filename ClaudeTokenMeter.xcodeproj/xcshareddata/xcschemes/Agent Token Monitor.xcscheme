@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A10008010000000000000001"
-               BuildableName = "Claude Token Meter.app"
-               BlueprintName = "Claude Token Meter"
+               BuildableName = "Agent Token Monitor.app"
+               BlueprintName = "Agent Token Monitor"
                ReferencedContainer = "container:ClaudeTokenMeter.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,8 +45,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A10008010000000000000001"
-            BuildableName = "Claude Token Meter.app"
-            BlueprintName = "Claude Token Meter"
+            BuildableName = "Agent Token Monitor.app"
+            BlueprintName = "Agent Token Monitor"
             ReferencedContainer = "container:ClaudeTokenMeter.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -62,8 +62,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A10008010000000000000001"
-            BuildableName = "Claude Token Meter.app"
-            BlueprintName = "Claude Token Meter"
+            BuildableName = "Agent Token Monitor.app"
+            BlueprintName = "Agent Token Monitor"
             ReferencedContainer = "container:ClaudeTokenMeter.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

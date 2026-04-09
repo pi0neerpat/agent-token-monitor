@@ -81,7 +81,7 @@ final class ClaudeUsageService {
         request.timeoutInterval = 10
         request.cachePolicy = .reloadIgnoringLocalCacheData
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("ClaudeTokenMeter/1.0", forHTTPHeaderField: "User-Agent")
+        request.setValue("AgentTokenMonitor/1.0", forHTTPHeaderField: "User-Agent")
         request.setValue("Bearer \(token.accessToken)", forHTTPHeaderField: "Authorization")
         request.setValue("oauth-2025-04-20", forHTTPHeaderField: "anthropic-beta")
 

@@ -4,16 +4,16 @@ final class DiagnosticsLogger {
     static let shared = DiagnosticsLogger()
 
     let logURL: URL
-    private let queue = DispatchQueue(label: "ClaudeTokenMeter.DiagnosticsLogger")
+    private let queue = DispatchQueue(label: "AgentTokenMonitor.DiagnosticsLogger")
     private let isoFormatter = ISO8601DateFormatter()
 
     private init() {
         let appSupportDir = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
             ?? FileManager.default.temporaryDirectory
-        let bundleID = Bundle.main.bundleIdentifier ?? "com.scribular.claude-token-meter"
+        let bundleID = Bundle.main.bundleIdentifier ?? "com.scribular.agent-token-monitor"
         let baseDir = appSupportDir.appendingPathComponent(bundleID, isDirectory: true)
         try? FileManager.default.createDirectory(at: baseDir, withIntermediateDirectories: true)
-        logURL = baseDir.appendingPathComponent("ClaudeTokenMeter.log")
+        logURL = baseDir.appendingPathComponent("AgentTokenMonitor.log")
     }
 
     func log(_ message: String) {
@@ -49,7 +49,7 @@ enum ProviderID: String {
     }
 
     var statusToolTipPrefix: String {
-        "\(displayName) Token Meter"
+        "\(displayName) usage"
     }
 }
 
