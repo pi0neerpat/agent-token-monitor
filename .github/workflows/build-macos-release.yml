@@ -23,6 +23,10 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Run unit tests
+        run: swift test
+        shell: bash
+
       - name: Bump patch version
         id: bump-version
         run: |

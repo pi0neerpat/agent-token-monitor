@@ -246,8 +246,9 @@ enum PTYRunner {
 
 enum TextParsing {
     static func stripANSICodes(_ text: String) -> String {
+        // Use a normal string so \u{001B} is the real ESC byte (raw #""# literals do not interpret \u escapes).
         text.replacingOccurrences(
-            of: #"\u{001B}\[[0-9;?]*[ -/]*[@-~]"#,
+            of: "\u{001B}\\[[0-9;?]*[ -/]*[@-~]",
             with: "",
             options: .regularExpression
         )
