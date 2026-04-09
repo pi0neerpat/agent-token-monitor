@@ -5,7 +5,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>Agent Token Monitor</string>
 	<key>CFBundleExecutable</key>
-	<string>agent-token-monitor</string>
+	<string>AgentTokenMonitor</string>
 	<key>CFBundleIconName</key>
 	<string>AppIcon</string>
 	<key>CFBundleIdentifier</key>

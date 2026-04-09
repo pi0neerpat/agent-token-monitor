@@ -3,20 +3,20 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 DIST_DIR="$SCRIPT_DIR/dist"
-APP_NAME="Agent Token Monitor.app"
+APP_NAME="AgentTokenMonitor.app"
 APP_DIR="$DIST_DIR/$APP_NAME"
 DMG_PATH="$DIST_DIR/AgentTokenMonitor.dmg"
 RW_DMG_PATH="$DIST_DIR/AgentTokenMonitor-temp.dmg"
 STAGING_DIR="$DIST_DIR/dmg-root"
-MODULE_CACHE="$(mktemp -d "${TMPDIR:-/tmp}/agent-token-monitor-module-cache.XXXXXX")"
+MODULE_CACHE="$(mktemp -d "${TMPDIR:-/tmp}/AgentTokenMonitor-module-cache.XXXXXX")"
 ICON_SRC="$SCRIPT_DIR/app-icon.png"
 MENU_BAR_ICON_SRC="$SCRIPT_DIR/assets/clawd.png"
 CODEX_ICON_SRC="$SCRIPT_DIR/assets/codex-icon.png"
 DMG_BACKGROUND_SRC="$SCRIPT_DIR/build/dmg-background.png"
 BUILD_DIR="$SCRIPT_DIR/.build"
-ARM64_BIN="$BUILD_DIR/agent-token-monitor-arm64"
-X64_BIN="$BUILD_DIR/agent-token-monitor-x86_64"
-UNIVERSAL_BIN="$APP_DIR/Contents/MacOS/agent-token-monitor"
+ARM64_BIN="$BUILD_DIR/AgentTokenMonitor-arm64"
+X64_BIN="$BUILD_DIR/AgentTokenMonitor-x86_64"
+UNIVERSAL_BIN="$APP_DIR/Contents/MacOS/AgentTokenMonitor"
 # Exclude Package.swift (SwiftPM manifest; not app source).
 SWIFT_SOURCES=()
 for f in "$SCRIPT_DIR"/*.swift; do

@@ -11,7 +11,7 @@
 		A10000020000000000000001 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A10001020000000000000001 /* Security.framework */; };
 		A10000030000000000000001 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002010000000000000001 /* AppDelegate.swift */; };
 		A10000040000000000000001 /* ClaudeProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002020000000000000001 /* ClaudeProvider.swift */; };
-		A10000050000000000000001 /* ClaudeTokenMeter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002030000000000000001 /* ClaudeTokenMeter.swift */; };
+		A10000050000000000000001 /* AgentTokenMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002030000000000000001 /* AgentTokenMonitor.swift */; };
 		A10000060000000000000001 /* CodexAuthAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002040000000000000001 /* CodexAuthAccess.swift */; };
 		A10000070000000000000001 /* CodexOAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002050000000000000001 /* CodexOAuth.swift */; };
 		A10000080000000000000001 /* CodexRPC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002060000000000000001 /* CodexRPC.swift */; };
@@ -30,7 +30,7 @@
 		A10001020000000000000001 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		A10002010000000000000001 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A10002020000000000000001 /* ClaudeProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaudeProvider.swift; sourceTree = "<group>"; };
-		A10002030000000000000001 /* ClaudeTokenMeter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaudeTokenMeter.swift; sourceTree = "<group>"; };
+		A10002030000000000000001 /* AgentTokenMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentTokenMonitor.swift; sourceTree = "<group>"; };
 		A10002040000000000000001 /* CodexAuthAccess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodexAuthAccess.swift; sourceTree = "<group>"; };
 		A10002050000000000000001 /* CodexOAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodexOAuth.swift; sourceTree = "<group>"; };
 		A10002060000000000000001 /* CodexRPC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodexRPC.swift; sourceTree = "<group>"; };
@@ -46,7 +46,7 @@
 		A10003030000000000000001 /* codex-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = assets/codex-icon.png; sourceTree = "<group>"; };
 		A10004010000000000000001 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A10004020000000000000001 /* entitlements.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = entitlements.plist; sourceTree = "<group>"; };
-		A10005010000000000000001 /* Agent Token Monitor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Agent Token Monitor.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A10005010000000000000001 /* AgentTokenMonitor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AgentTokenMonitor.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,17 +65,17 @@
 		A10007010000000000000001 = {
 			isa = PBXGroup;
 			children = (
-				A10007020000000000000001 /* ClaudeTokenMeter */,
+				A10007020000000000000001 /* Agent Token Monitor */,
 				A10007030000000000000001 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		A10007020000000000000001 /* ClaudeTokenMeter */ = {
+		A10007020000000000000001 /* Agent Token Monitor */ = {
 			isa = PBXGroup;
 			children = (
 				A10002010000000000000001 /* AppDelegate.swift */,
 				A10002020000000000000001 /* ClaudeProvider.swift */,
-				A10002030000000000000001 /* ClaudeTokenMeter.swift */,
+				A10002030000000000000001 /* AgentTokenMonitor.swift */,
 				A10002040000000000000001 /* CodexAuthAccess.swift */,
 				A10002050000000000000001 /* CodexOAuth.swift */,
 				A10002060000000000000001 /* CodexRPC.swift */,
@@ -93,13 +93,13 @@
 				A10004020000000000000001 /* entitlements.plist */,
 				A10007040000000000000001 /* Frameworks */,
 			);
-			name = ClaudeTokenMeter;
+			name = "Agent Token Monitor";
 			sourceTree = "<group>";
 		};
 		A10007030000000000000001 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A10005010000000000000001 /* Agent Token Monitor.app */,
+				A10005010000000000000001 /* AgentTokenMonitor.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -129,8 +129,8 @@
 			dependencies = (
 			);
 			name = "Agent Token Monitor";
-			productName = "Agent Token Monitor";
-			productReference = A10005010000000000000001 /* Agent Token Monitor.app */;
+			productName = AgentTokenMonitor;
+			productReference = A10005010000000000000001 /* AgentTokenMonitor.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -148,7 +148,7 @@
 					};
 				};
 			};
-			buildConfigurationList = A1000A010000000000000001 /* Build configuration list for PBXProject "ClaudeTokenMeter" */;
+			buildConfigurationList = A1000A010000000000000001 /* Build configuration list for PBXProject "AgentTokenMonitor" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -184,7 +184,7 @@
 			files = (
 				A10000030000000000000001 /* AppDelegate.swift in Sources */,
 				A10000040000000000000001 /* ClaudeProvider.swift in Sources */,
-				A10000050000000000000001 /* ClaudeTokenMeter.swift in Sources */,
+				A10000050000000000000001 /* AgentTokenMonitor.swift in Sources */,
 				A10000060000000000000001 /* CodexAuthAccess.swift in Sources */,
 				A10000070000000000000001 /* CodexOAuth.swift in Sources */,
 				A10000080000000000000001 /* CodexRPC.swift in Sources */,
@@ -237,7 +237,7 @@
 				CURRENT_PROJECT_VERSION = 1.0.2;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = NO;
-				EXECUTABLE_NAME = agent-token-monitor;
+				EXECUTABLE_NAME = AgentTokenMonitor;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -247,8 +247,8 @@
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.scribular.agent-token-monitor;
-				PRODUCT_MODULE_NAME = ClaudeTokenMeter;
-				PRODUCT_NAME = "Agent Token Monitor";
+				PRODUCT_MODULE_NAME = AgentTokenMonitor;
+				PRODUCT_NAME = "AgentTokenMonitor";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -265,7 +265,7 @@
 				CURRENT_PROJECT_VERSION = 1.0.2;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = NO;
-				EXECUTABLE_NAME = agent-token-monitor;
+				EXECUTABLE_NAME = AgentTokenMonitor;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -275,8 +275,8 @@
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.scribular.agent-token-monitor;
-				PRODUCT_MODULE_NAME = ClaudeTokenMeter;
-				PRODUCT_NAME = "Agent Token Monitor";
+				PRODUCT_MODULE_NAME = AgentTokenMonitor;
+				PRODUCT_NAME = "AgentTokenMonitor";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 			};
@@ -285,7 +285,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A1000A010000000000000001 /* Build configuration list for PBXProject "ClaudeTokenMeter" */ = {
+		A1000A010000000000000001 /* Build configuration list for PBXProject "AgentTokenMonitor" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A1000C010000000000000001 /* Debug */,

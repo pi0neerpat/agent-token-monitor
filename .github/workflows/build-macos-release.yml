@@ -87,7 +87,7 @@ jobs:
 
       - name: Verify codesigning and Gatekeeper acceptance
         run: |
-          codesign --verify --deep --strict --verbose=2 "dist/Agent Token Monitor.app"
+          codesign --verify --deep --strict --verbose=2 "dist/AgentTokenMonitor.app"
           spctl -a -t open --context context:primary-signature -v "dist/AgentTokenMonitor.dmg"
         shell: bash
 

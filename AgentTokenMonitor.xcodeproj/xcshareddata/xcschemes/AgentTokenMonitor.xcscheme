@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A10008010000000000000001"
-               BuildableName = "Agent Token Monitor.app"
+               BuildableName = "AgentTokenMonitor.app"
                BlueprintName = "Agent Token Monitor"
-               ReferencedContainer = "container:ClaudeTokenMeter.xcodeproj">
+               ReferencedContainer = "container:AgentTokenMonitor.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -45,9 +45,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A10008010000000000000001"
-            BuildableName = "Agent Token Monitor.app"
+            BuildableName = "AgentTokenMonitor.app"
             BlueprintName = "Agent Token Monitor"
-            ReferencedContainer = "container:ClaudeTokenMeter.xcodeproj">
+            ReferencedContainer = "container:AgentTokenMonitor.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -62,9 +62,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A10008010000000000000001"
-            BuildableName = "Agent Token Monitor.app"
+            BuildableName = "AgentTokenMonitor.app"
             BlueprintName = "Agent Token Monitor"
-            ReferencedContainer = "container:ClaudeTokenMeter.xcodeproj">
+            ReferencedContainer = "container:AgentTokenMonitor.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

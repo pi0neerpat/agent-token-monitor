@@ -2,15 +2,15 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-APP="$SCRIPT_DIR/dist/Agent Token Monitor.app"
+APP="$SCRIPT_DIR/dist/AgentTokenMonitor.app"
 ICON_SRC="$SCRIPT_DIR/app-icon.png"
 MENU_BAR_ICON_SRC="$SCRIPT_DIR/assets/clawd.png"
 CODEX_ICON_SRC="$SCRIPT_DIR/assets/codex-icon.png"
 BUILD_DIR="$SCRIPT_DIR/.build"
-MODULE_CACHE_DIR="$(mktemp -d "${TMPDIR:-/tmp}/agent-token-monitor-module-cache.XXXXXX")"
-ARM64_BIN="$BUILD_DIR/agent-token-monitor-arm64"
-X64_BIN="$BUILD_DIR/agent-token-monitor-x86_64"
-UNIVERSAL_BIN="$APP/Contents/MacOS/agent-token-monitor"
+MODULE_CACHE_DIR="$(mktemp -d "${TMPDIR:-/tmp}/AgentTokenMonitor-module-cache.XXXXXX")"
+ARM64_BIN="$BUILD_DIR/AgentTokenMonitor-arm64"
+X64_BIN="$BUILD_DIR/AgentTokenMonitor-x86_64"
+UNIVERSAL_BIN="$APP/Contents/MacOS/AgentTokenMonitor"
 # Exclude Package.swift (SwiftPM manifest; not app source).
 SWIFT_SOURCES=()
 for f in "$SCRIPT_DIR"/*.swift; do
@@ -120,4 +120,4 @@ codesign \
     --entitlements "$SCRIPT_DIR/entitlements.plist" \
     "$APP"
 
-echo "Built and signed universal Agent Token Monitor.app at $APP"
+echo "Built and signed Agent Token Monitor → $APP"

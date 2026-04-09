@@ -119,7 +119,7 @@ struct CodexProviderClient: ProviderClient {
         let rpc = try CodexRPCClient(environment: environment)
         defer { rpc.shutdown() }
 
-        try await rpc.initialize(clientName: "agent-token-monitor", clientVersion: "1.1.0")
+        try await rpc.initialize(clientName: "AgentTokenMonitor", clientVersion: "1.1.0")
         let limits = try await rpc.fetchRateLimits().rateLimits
         let account = try? await rpc.fetchAccount()
         let normalized = normalizeCodexWindows(

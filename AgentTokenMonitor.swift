@@ -1,7 +1,7 @@
 import Cocoa
 
 @main
-struct ClaudeTokenMeterApp {
+struct AgentTokenMonitorApp {
     static func main() {
         let app = NSApplication.shared
         let delegate = AppDelegate()
