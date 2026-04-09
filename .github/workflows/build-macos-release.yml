@@ -87,6 +87,26 @@ jobs:
           spctl -a -t open --context context:primary-signature -v "dist/ClaudeTokenMeter.dmg"
         shell: bash
 
+      - name: Commit version bump
+        env:
+          APP_VERSION: ${{ steps.bump-version.outputs.app_version }}
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add Info.plist
+
+          if git diff --cached --quiet; then
+            echo "No version bump changes to commit."
+            exit 0
+          fi
+
+          git commit -m "Bump version to ${APP_VERSION}"
+          git push origin "HEAD:${{ github.ref_name }}"
+        shell: bash
+
       - name: Upload release artifact
         uses: actions/upload-artifact@v4
         with:
