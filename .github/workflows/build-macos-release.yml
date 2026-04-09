@@ -129,10 +129,11 @@ jobs:
           printf '%s\n' "${{ inputs.release_notes || 'Automated macOS release.' }}" > "$NOTES_FILE"
 
           if gh release view "$TAG" >/dev/null 2>&1; then
-            gh release upload "$TAG" "dist/ClaudeTokenMeter.dmg" --clobber
-          else
-            gh release create "$TAG" "dist/ClaudeTokenMeter.dmg" \
-              --title "Claude Token Meter ${APP_VERSION}" \
-              --notes-file "$NOTES_FILE"
+            echo "Release $TAG already exists; this workflow only creates new releases. Bump the version or delete the existing release."
+            exit 1
           fi
+
+          gh release create "$TAG" "dist/ClaudeTokenMeter.dmg" \
+            --title "Claude Token Meter ${APP_VERSION}" \
+            --notes-file "$NOTES_FILE"
         shell: bash
