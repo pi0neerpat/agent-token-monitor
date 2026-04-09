@@ -7,7 +7,7 @@ ICON_SRC="$SCRIPT_DIR/app-icon.png"
 MENU_BAR_ICON_SRC="$SCRIPT_DIR/assets/clawd.png"
 CODEX_ICON_SRC="$SCRIPT_DIR/assets/codex-icon.png"
 BUILD_DIR="$SCRIPT_DIR/.build"
-MODULE_CACHE_DIR="$BUILD_DIR/module-cache"
+MODULE_CACHE_DIR="$(mktemp -d "${TMPDIR:-/tmp}/claude-token-meter-module-cache.XXXXXX")"
 ARM64_BIN="$BUILD_DIR/claude-token-meter-arm64"
 X64_BIN="$BUILD_DIR/claude-token-meter-x86_64"
 UNIVERSAL_BIN="$APP/Contents/MacOS/claude-token-meter"
@@ -16,11 +16,12 @@ MACOS_TARGET="13.0"
 BUNDLE_ID="com.scribular.claude-token-meter"
 DESIGNATED_REQUIREMENT="=designated => identifier \"$BUNDLE_ID\""
 
+trap 'rm -rf "$MODULE_CACHE_DIR"' EXIT
+
 # Create .app bundle structure
 mkdir -p "$APP/Contents/MacOS"
 mkdir -p "$APP/Contents/Resources"
 mkdir -p "$BUILD_DIR"
-mkdir -p "$MODULE_CACHE_DIR"
 
 # Copy Info.plist
 cp "$SCRIPT_DIR/Info.plist" "$APP/Contents/"

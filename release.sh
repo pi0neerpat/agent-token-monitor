@@ -8,7 +8,7 @@ APP_DIR="$DIST_DIR/$APP_NAME"
 DMG_PATH="$DIST_DIR/ClaudeTokenMeter.dmg"
 RW_DMG_PATH="$DIST_DIR/ClaudeTokenMeter-temp.dmg"
 STAGING_DIR="$DIST_DIR/dmg-root"
-MODULE_CACHE="$SCRIPT_DIR/.swift-module-cache"
+MODULE_CACHE="$(mktemp -d "${TMPDIR:-/tmp}/claude-token-meter-module-cache.XXXXXX")"
 ICON_SRC="$SCRIPT_DIR/app-icon.png"
 MENU_BAR_ICON_SRC="$SCRIPT_DIR/assets/clawd.png"
 DMG_BACKGROUND_SRC="$SCRIPT_DIR/build/dmg-background.png"
@@ -16,6 +16,7 @@ BUILD_DIR="$SCRIPT_DIR/.build"
 ARM64_BIN="$BUILD_DIR/claude-token-meter-arm64"
 X64_BIN="$BUILD_DIR/claude-token-meter-x86_64"
 UNIVERSAL_BIN="$APP_DIR/Contents/MacOS/claude-token-meter"
+SWIFT_SOURCES=("$SCRIPT_DIR"/*.swift)
 MACOS_TARGET="13.0"
 BUNDLE_ID="com.scribular.claude-token-meter"
 DESIGNATED_REQUIREMENT="=designated => identifier \"$BUNDLE_ID\""
@@ -32,6 +33,8 @@ APPLE_IDENTITY="${APPLE_IDENTITY:-}"
 APPLE_ID="${APPLE_ID:-}"
 APPLE_ID_PASSWORD="${APPLE_ID_PASSWORD:-}"
 APPLE_TEAM_ID="${APPLE_TEAM_ID:-}"
+
+trap 'rm -rf "$MODULE_CACHE"' EXIT
 
 if [[ "$SIGNING_MODE" != "test" && "$SIGNING_MODE" != "sandbox" && "$SIGNING_MODE" != "release" ]]; then
     echo "Usage: ./release.sh [test|sandbox|release]"
@@ -60,7 +63,7 @@ fi
 
 /bin/chmod -R u+w "$DIST_DIR" 2>/dev/null || true
 /bin/rm -rf "$APP_DIR" "$DMG_PATH" "$RW_DMG_PATH" "$STAGING_DIR"
-mkdir -p "$APP_DIR/Contents/MacOS" "$APP_DIR/Contents/Resources" "$STAGING_DIR" "$MODULE_CACHE" "$BUILD_DIR"
+mkdir -p "$APP_DIR/Contents/MacOS" "$APP_DIR/Contents/Resources" "$STAGING_DIR" "$BUILD_DIR"
 
 cp "$SCRIPT_DIR/Info.plist" "$APP_DIR/Contents/"
 cp "$MENU_BAR_ICON_SRC" "$APP_DIR/Contents/Resources/clawd.png"
@@ -121,7 +124,7 @@ xcrun actool \
 
 swiftc \
     -module-cache-path "$MODULE_CACHE" \
-    "$SCRIPT_DIR/ClaudeTokenMeter.swift" \
+    "${SWIFT_SOURCES[@]}" \
     -o "$ARM64_BIN" \
     -target "arm64-apple-macos${MACOS_TARGET}" \
     -framework Cocoa \
@@ -130,7 +133,7 @@ swiftc \
 
 swiftc \
     -module-cache-path "$MODULE_CACHE" \
-    "$SCRIPT_DIR/ClaudeTokenMeter.swift" \
+    "${SWIFT_SOURCES[@]}" \
     -o "$X64_BIN" \
     -target "x86_64-apple-macos${MACOS_TARGET}" \
     -framework Cocoa \
