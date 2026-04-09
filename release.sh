@@ -16,7 +16,13 @@ BUILD_DIR="$SCRIPT_DIR/.build"
 ARM64_BIN="$BUILD_DIR/claude-token-meter-arm64"
 X64_BIN="$BUILD_DIR/claude-token-meter-x86_64"
 UNIVERSAL_BIN="$APP_DIR/Contents/MacOS/claude-token-meter"
-SWIFT_SOURCES=("$SCRIPT_DIR"/*.swift)
+# Exclude Package.swift (SwiftPM manifest; not app source).
+SWIFT_SOURCES=()
+for f in "$SCRIPT_DIR"/*.swift; do
+  [[ -f "$f" ]] || continue
+  [[ "$(basename "$f")" == "Package.swift" ]] && continue
+  SWIFT_SOURCES+=("$f")
+done
 MACOS_TARGET="13.0"
 BUNDLE_ID="com.scribular.claude-token-meter"
 DESIGNATED_REQUIREMENT="=designated => identifier \"$BUNDLE_ID\""
