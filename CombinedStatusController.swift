@@ -142,7 +142,7 @@ final class CombinedStatusController: NSObject {
         button.image = nil
         button.imagePosition = .imageOnly
         button.imageScaling = .scaleNone
-        logger.log("Combined status item setup; button available with initial width \(statusView.intrinsicContentSize.width)")
+
         statusView.onSizeChange = { [weak self] in
             self?.renderStatusItem()
         }
@@ -163,22 +163,14 @@ final class CombinedStatusController: NSObject {
             statusItem.length = width
             button.frame = NSRect(x: button.frame.origin.x, y: button.frame.origin.y, width: width, height: button.frame.height)
             button.needsLayout = true
-            logger.log(
-                "Combined status rendered image \(Int(image.size.width))x\(Int(image.size.height)); " +
-                "fitting \(Int(fittingSize.width))x\(Int(fittingSize.height)); " +
-                "buttonWidth=\(Int(button.frame.width)); codexVisible=\(statusView.codexVisible)"
-            )
+            
         } else {
             button.image = nil
             button.title = "CTM"
             button.imagePosition = .noImage
             statusItem.length = NSStatusItem.variableLength
             button.needsLayout = true
-            logger.log(
-                "Combined status snapshot returned nil; falling back to title. " +
-                "fitting \(Int(fittingSize.width))x\(Int(fittingSize.height)); " +
-                "buttonWidth=\(Int(button.frame.width)); codexVisible=\(statusView.codexVisible)"
-            )
+   
         }
     }
 
