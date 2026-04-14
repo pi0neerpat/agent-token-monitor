@@ -30,9 +30,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private func setupProviders() {
         let claudeIcon = NSImage(named: "ClaudeMenuIcon") ?? Bundle.main.image(forResource: "clawd")
         let codexIcon = NSImage(named: "CodexMenuIcon") ?? Bundle.main.image(forResource: "codex-icon")
+        let cursorIcon = NSImage(named: "CursorMenuIcon") ?? Bundle.main.image(forResource: "cursor-icon")
         let controller = CombinedStatusController(
             claudeIcon: claudeIcon,
             codexIcon: codexIcon,
+            cursorIcon: cursorIcon,
             logURL: logger.logURL
         )
         controller.onOpenLog = { [weak self] in

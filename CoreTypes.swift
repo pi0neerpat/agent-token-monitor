@@ -38,6 +38,7 @@ final class DiagnosticsLogger {
 enum ProviderID: String {
     case claude
     case codex
+    case cursor
 
     var displayName: String {
         switch self {
@@ -45,6 +46,8 @@ enum ProviderID: String {
             return "Claude"
         case .codex:
             return "Codex"
+        case .cursor:
+            return "Cursor"
         }
     }
 

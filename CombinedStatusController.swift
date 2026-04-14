@@ -8,12 +8,14 @@ final class CombinedStatusController: NSObject {
     private let statusView: CombinedStatusItemView
     private let claudeClient: ProviderClient
     private let codexClient: ProviderClient
+    private let cursorClient: ProviderClient
     private var claudeEnabled = ProviderVisibilityPreferences.isEnabled(.claude)
     private var codexEnabled = ProviderVisibilityPreferences.isEnabled(.codex)
+    private var cursorEnabled = ProviderVisibilityPreferences.isEnabled(.cursor)
     private var codexAccessEnabled = false
 
     private var refreshTasks: [ProviderID: Task<Void, Never>] = [:]
-    private var refreshGenerations: [ProviderID: Int] = [.claude: 0, .codex: 0]
+    private var refreshGenerations: [ProviderID: Int] = [.claude: 0, .codex: 0, .cursor: 0]
     private var latestSnapshots: [ProviderID: ProviderSnapshot] = [:]
     private var latestErrors: [ProviderID: Error] = [:]
 
@@ -34,20 +36,30 @@ final class CombinedStatusController: NSObject {
     private let codexToggleItem = NSMenuItem(title: "", action: nil, keyEquivalent: "")
     private let codexAuthorizeItem = NSMenuItem(title: "", action: nil, keyEquivalent: "")
 
+    private let cursorHeaderItem = NSMenuItem(title: "Cursor", action: nil, keyEquivalent: "")
+    private let cursorCurrentItem = NSMenuItem(title: "Billing cycle: loading…", action: nil, keyEquivalent: "")
+    private let cursorWeeklyItem = NSMenuItem(title: "Weekly: loading…", action: nil, keyEquivalent: "")
+    private let cursorCreditsItem = NSMenuItem(title: "Credits: loading…", action: nil, keyEquivalent: "")
+    private let cursorPlanSourceItem = NSMenuItem(title: "Plan: loading… | Source: loading…", action: nil, keyEquivalent: "")
+    private let cursorErrorItem = NSMenuItem(title: "", action: nil, keyEquivalent: "")
+    private let cursorToggleItem = NSMenuItem(title: "", action: nil, keyEquivalent: "")
+
     var onOpenLog: (() -> Void)?
     var onQuit: (() -> Void)?
     var onEnableCodex: (() -> Void)?
 
-    init(claudeIcon: NSImage?, codexIcon: NSImage?, logURL: URL) {
+    init(claudeIcon: NSImage?, codexIcon: NSImage?, cursorIcon: NSImage?, logURL: URL) {
         self.claudeClient = ClaudeProviderClient()
         self.codexClient = CodexProviderClient()
-        self.statusView = CombinedStatusItemView(claudeIcon: claudeIcon, codexIcon: codexIcon)
+        self.cursorClient = CursorProviderClient()
+        self.statusView = CombinedStatusItemView(claudeIcon: claudeIcon, codexIcon: codexIcon, cursorIcon: cursorIcon)
         self.statusItem = NSStatusBar.system.statusItem(withLength: statusView.intrinsicContentSize.width)
         super.init()
         setupStatusItem()
         setupMenu(logURL: logURL)
         setClaudeEnabled(claudeEnabled, persist: false)
         setCodexEnabled(codexEnabled, persist: false)
+        setCursorEnabled(cursorEnabled, persist: false)
         setCodexAccessEnabled(CodexAuthAccess.hasAuthorizedFile())
     }
 
@@ -58,6 +70,9 @@ final class CombinedStatusController: NSObject {
         if codexEnabled && codexAccessEnabled {
             refresh(providerID: .codex)
         }
+        if cursorEnabled {
+            refresh(providerID: .cursor)
+        }
     }
 
     func refreshCountdownOnly() {
@@ -66,6 +81,9 @@ final class CombinedStatusController: NSObject {
         }
         if codexEnabled, codexAccessEnabled, let snapshot = latestSnapshots[.codex] {
             apply(snapshot: snapshot, providerID: .codex, preserveMenuState: true)
+        }
+        if cursorEnabled, let snapshot = latestSnapshots[.cursor] {
+            apply(snapshot: snapshot, providerID: .cursor, preserveMenuState: true)
         }
     }
 
@@ -117,7 +135,12 @@ final class CombinedStatusController: NSObject {
         let generation = refreshGenerations[providerID, default: 0]
         applyLoadingState(for: providerID)
 
-        let client = providerID == .claude ? claudeClient : codexClient
+        let client: ProviderClient
+        switch providerID {
+        case .claude: client = claudeClient
+        case .codex: client = codexClient
+        case .cursor: client = cursorClient
+        }
         refreshTasks[providerID] = Task { @MainActor [weak self] in
             guard let self else { return }
             defer { self.refreshTasks[providerID] = nil }
@@ -191,8 +214,15 @@ final class CombinedStatusController: NSObject {
         codexSubmenu.addItem(codexAuthorizeItem)
         codexHeaderItem.submenu = codexSubmenu
 
+        let cursorSubmenu = NSMenu(title: "Cursor")
+        cursorToggleItem.target = self
+        cursorToggleItem.action = #selector(toggleCursorEnabled)
+        cursorSubmenu.addItem(cursorToggleItem)
+        cursorHeaderItem.submenu = cursorSubmenu
+
         claudeErrorItem.isHidden = true
         codexErrorItem.isHidden = true
+        cursorErrorItem.isHidden = true
         _ = logURL
 
         menu.addItem(claudeHeaderItem)
@@ -209,6 +239,14 @@ final class CombinedStatusController: NSObject {
         menu.addItem(codexCreditsItem)
         menu.addItem(codexPlanSourceItem)
         menu.addItem(codexErrorItem)
+        menu.addItem(.separator())
+
+        menu.addItem(cursorHeaderItem)
+        menu.addItem(cursorCurrentItem)
+        menu.addItem(cursorWeeklyItem)
+        menu.addItem(cursorCreditsItem)
+        menu.addItem(cursorPlanSourceItem)
+        menu.addItem(cursorErrorItem)
         menu.addItem(.separator())
 
         let refreshItem = NSMenuItem(title: "Refresh", action: #selector(refreshNow), keyEquivalent: "r")
@@ -246,6 +284,10 @@ final class CombinedStatusController: NSObject {
         setCodexEnabled(!codexEnabled)
     }
 
+    @objc private func toggleCursorEnabled() {
+        setCursorEnabled(!cursorEnabled)
+    }
+
     @objc private func quitApp() {
         onQuit?()
     }
@@ -256,6 +298,8 @@ final class CombinedStatusController: NSObject {
             statusView.claudeState = .loading
         case .codex:
             statusView.codexState = .loading
+        case .cursor:
+            statusView.cursorState = .loading
         }
         updateTooltip()
     }
@@ -280,10 +324,12 @@ final class CombinedStatusController: NSObject {
             statusView.claudeState = state
         case .codex:
             statusView.codexState = state
+        case .cursor:
+            statusView.cursorState = state
         }
         updateTooltip()
 
-        let currentTitle = currentRowTitle(from: snapshot.primary)
+        let currentTitle = currentRowTitle(from: snapshot.primary, providerID: providerID)
         let weeklyTitle = weeklyRowTitle(from: snapshot.secondary)
 
         if preserveMenuState {
@@ -294,6 +340,9 @@ final class CombinedStatusController: NSObject {
             case .codex:
                 codexCurrentItem.title = currentTitle
                 codexWeeklyItem.title = weeklyTitle
+            case .cursor:
+                cursorCurrentItem.title = currentTitle
+                cursorWeeklyItem.title = weeklyTitle
             }
             return
         }
@@ -313,6 +362,13 @@ final class CombinedStatusController: NSObject {
             codexCreditsItem.isHidden = snapshot.credits == nil
             codexPlanSourceItem.title = "Plan: \(snapshot.plan ?? "unavailable") | Source: \(snapshot.sourceLabel)"
             codexErrorItem.isHidden = true
+        case .cursor:
+            cursorCurrentItem.title = currentTitle
+            cursorWeeklyItem.title = weeklyTitle
+            cursorCreditsItem.title = "Credits: \(snapshot.credits?.text ?? "unavailable")"
+            cursorCreditsItem.isHidden = snapshot.credits == nil
+            cursorPlanSourceItem.title = "Plan: \(snapshot.plan ?? "unavailable") | Source: \(snapshot.sourceLabel)"
+            cursorErrorItem.isHidden = true
         }
     }
 
@@ -338,6 +394,15 @@ final class CombinedStatusController: NSObject {
             codexPlanSourceItem.title = "Plan: unavailable | Source: unavailable"
             codexErrorItem.title = "Error: \(error.localizedDescription)"
             codexErrorItem.isHidden = false
+        case .cursor:
+            statusView.cursorState = .error(error.localizedDescription)
+            cursorCurrentItem.title = "Billing cycle: unavailable"
+            cursorWeeklyItem.title = "Weekly: unavailable"
+            cursorCreditsItem.title = "Credits: unavailable"
+            cursorCreditsItem.isHidden = false
+            cursorPlanSourceItem.title = "Plan: unavailable | Source: unavailable"
+            cursorErrorItem.title = "Error: \(error.localizedDescription)"
+            cursorErrorItem.isHidden = false
         }
         updateTooltip()
     }
@@ -345,7 +410,8 @@ final class CombinedStatusController: NSObject {
     private func updateTooltip() {
         let claudeTooltip = tooltipText(for: .claude, snapshot: latestSnapshots[.claude], error: latestErrors[.claude])
         let codexTooltip = tooltipText(for: .codex, snapshot: latestSnapshots[.codex], error: latestErrors[.codex])
-        statusView.toolTip = "\(claudeTooltip)\n\(codexTooltip)"
+        let cursorTooltip = tooltipText(for: .cursor, snapshot: latestSnapshots[.cursor], error: latestErrors[.cursor])
+        statusView.toolTip = "\(claudeTooltip)\n\(codexTooltip)\n\(cursorTooltip)"
     }
 
     private func tooltipText(for providerID: ProviderID, snapshot: ProviderSnapshot?, error: Error?) -> String {
@@ -370,9 +436,10 @@ final class CombinedStatusController: NSObject {
         return "\(providerID.statusToolTipPrefix): \(lane) \(displayWindow.usedPercent)% used, reset \(resetText)"
     }
 
-    private func currentRowTitle(from window: ProviderWindowSnapshot?) -> String {
-        guard let window else { return "Current session: unavailable" }
-        return "Current session: \(window.usedPercent)% used (\(UsageFormatter.countdownText(to: window.resetsAt)))"
+    private func currentRowTitle(from window: ProviderWindowSnapshot?, providerID: ProviderID = .claude) -> String {
+        let label = providerID == .cursor ? "Billing cycle" : "Current session"
+        guard let window else { return "\(label): unavailable" }
+        return "\(label): \(window.usedPercent)% used (\(UsageFormatter.countdownText(to: window.resetsAt)))"
     }
 
     private func weeklyRowTitle(from window: ProviderWindowSnapshot?) -> String {
@@ -389,6 +456,9 @@ final class CombinedStatusController: NSObject {
             return .systemYellow
         }
         if providerID == .codex {
+            return NSColor(calibratedWhite: 0.96, alpha: 0.98)
+        }
+        if providerID == .cursor {
             return NSColor(calibratedWhite: 0.96, alpha: 0.98)
         }
         return .systemOrange
@@ -430,9 +500,28 @@ final class CombinedStatusController: NSObject {
         }
     }
 
+    private func setCursorEnabled(_ enabled: Bool, persist: Bool = true) {
+        cursorEnabled = enabled
+        if persist {
+            ProviderVisibilityPreferences.setEnabled(enabled, for: .cursor)
+        }
+        cursorToggleItem.title = enabled ? "Disable Cursor" : "Enable Cursor"
+        if !enabled {
+            refreshTasks[.cursor]?.cancel()
+            refreshTasks[.cursor] = nil
+        }
+        updateProviderVisibility()
+        updateSectionVisibility(for: .cursor)
+        updateTooltip()
+        if enabled {
+            refresh(providerID: .cursor)
+        }
+    }
+
     private func updateProviderVisibility() {
         statusView.claudeVisible = claudeEnabled
         statusView.codexVisible = codexEnabled && codexAccessEnabled
+        statusView.cursorVisible = cursorEnabled
     }
 
     private func updateSectionVisibility(for providerID: ProviderID) {
@@ -446,6 +535,10 @@ final class CombinedStatusController: NSObject {
             for item in codexSectionItems {
                 item.isHidden = !isVisible
             }
+        case .cursor:
+            for item in cursorSectionItems {
+                item.isHidden = !isVisible
+            }
         }
     }
 
@@ -455,6 +548,8 @@ final class CombinedStatusController: NSObject {
             return claudeEnabled
         case .codex:
             return codexEnabled
+        case .cursor:
+            return cursorEnabled
         }
     }
 
@@ -464,6 +559,8 @@ final class CombinedStatusController: NSObject {
             return claudeEnabled
         case .codex:
             return codexEnabled && codexAccessEnabled
+        case .cursor:
+            return cursorEnabled
         }
     }
 
@@ -473,5 +570,9 @@ final class CombinedStatusController: NSObject {
 
     private var codexSectionItems: [NSMenuItem] {
         [codexCurrentItem, codexWeeklyItem, codexCreditsItem, codexPlanSourceItem, codexErrorItem]
+    }
+
+    private var cursorSectionItems: [NSMenuItem] {
+        [cursorCurrentItem, cursorWeeklyItem, cursorCreditsItem, cursorPlanSourceItem, cursorErrorItem]
     }
 }

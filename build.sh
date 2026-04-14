@@ -6,6 +6,7 @@ APP="$SCRIPT_DIR/dist/AgentTokenMonitor.app"
 ICON_SRC="$SCRIPT_DIR/app-icon.png"
 MENU_BAR_ICON_SRC="$SCRIPT_DIR/assets/clawd.png"
 CODEX_ICON_SRC="$SCRIPT_DIR/assets/codex-icon.png"
+CURSOR_ICON_SRC="$SCRIPT_DIR/assets/cursor-icon.png"
 BUILD_DIR="$SCRIPT_DIR/.build"
 MODULE_CACHE_DIR="$(mktemp -d "${TMPDIR:-/tmp}/AgentTokenMonitor-module-cache.XXXXXX")"
 ARM64_BIN="$BUILD_DIR/AgentTokenMonitor-arm64"
@@ -33,6 +34,7 @@ mkdir -p "$BUILD_DIR"
 cp "$SCRIPT_DIR/Info.plist" "$APP/Contents/"
 cp "$MENU_BAR_ICON_SRC" "$APP/Contents/Resources/clawd.png"
 cp "$CODEX_ICON_SRC" "$APP/Contents/Resources/codex-icon.png"
+cp "$CURSOR_ICON_SRC" "$APP/Contents/Resources/cursor-icon.png"
 
 # Compile universal Swift binary
 swiftc "${SWIFT_SOURCES[@]}" \

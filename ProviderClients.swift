@@ -5,6 +5,79 @@ protocol ProviderClient {
     func fetchSnapshot() async throws -> ProviderSnapshot
 }
 
+struct CursorProviderClient: ProviderClient {
+    let providerID: ProviderID = .cursor
+    private let service = CursorUsageService()
+
+    func fetchSnapshot() async throws -> ProviderSnapshot {
+        async let usageFetch = service.fetchUsage()
+        async let planFetch = service.fetchPlan()
+        async let creditsFetch = service.fetchCreditGrants()
+
+        let usage = try await usageFetch
+        let plan = try? await planFetch
+        let credits = try? await creditsFetch
+
+        guard let planUsage = usage.planUsage else {
+            throw AppError.malformedResponse("Cursor returned no plan usage data.")
+        }
+
+        let usedPercent = max(0, min(100, Int(round(planUsage.totalPercentUsed ?? 0))))
+        let resetsAt = usage.billingCycleEnd.flatMap { millisecondsToDate($0) }
+
+        let primary = ProviderWindowSnapshot(
+            usedPercent: usedPercent,
+            windowMinutes: billingWindowMinutes(start: usage.billingCycleStart, end: usage.billingCycleEnd),
+            resetsAt: resetsAt,
+            resetDescription: UsageFormatter.countdownText(to: resetsAt)
+        )
+
+        return ProviderSnapshot(
+            primary: primary,
+            secondary: nil,
+            updatedAt: Date(),
+            plan: plan?.planInfo?.planName,
+            credits: makeCredits(from: credits, planUsage: planUsage),
+            sourceLabel: "cursor-api",
+            accountEmail: service.resolveAccountEmail()
+        )
+    }
+
+    private func makeCredits(from grants: CursorCreditGrantsResponse?, planUsage: CursorUsageResponse.PlanUsage) -> ProviderCreditsSnapshot? {
+        if let grants, grants.hasCreditGrants == true,
+           let balanceCents = grants.creditBalanceCents.flatMap({ Int64($0) }) {
+            let balance = Double(balanceCents) / 100.0
+            return ProviderCreditsSnapshot(
+                text: String(format: "$%.2f remaining", balance),
+                remainingBalance: balance
+            )
+        }
+
+        guard let remaining = planUsage.remaining, let limit = planUsage.limit else {
+            return nil
+        }
+        let remainingDollars = Double(remaining) / 100.0
+        let limitDollars = Double(limit) / 100.0
+        return ProviderCreditsSnapshot(
+            text: String(format: "$%.2f / $%.2f remaining", remainingDollars, limitDollars),
+            remainingBalance: remainingDollars
+        )
+    }
+
+    private func millisecondsToDate(_ ms: String) -> Date? {
+        guard let value = Double(ms) else { return nil }
+        return Date(timeIntervalSince1970: value / 1000.0)
+    }
+
+    private func billingWindowMinutes(start: String?, end: String?) -> Int? {
+        guard let startDate = start.flatMap({ millisecondsToDate($0) }),
+              let endDate = end.flatMap({ millisecondsToDate($0) }) else {
+            return nil
+        }
+        return Int(endDate.timeIntervalSince(startDate) / 60.0)
+    }
+}
+
 struct ClaudeProviderClient: ProviderClient {
     let providerID: ProviderID = .claude
     private let service = ClaudeUsageService()

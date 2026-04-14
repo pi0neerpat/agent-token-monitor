@@ -22,6 +22,7 @@
 		A100000D0000000000000001 /* ProviderClients.swift in Sources */ = {isa = PBXBuildFile; fileRef = A100020B0000000000000001 /* ProviderClients.swift */; };
 		A100000E0000000000000001 /* ProviderStatusController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A100020C0000000000000001 /* ProviderStatusController.swift */; };
 		A100000F0000000000000001 /* SupportUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = A100020D0000000000000001 /* SupportUtilities.swift */; };
+		A10000110000000000000001 /* CursorProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A100020E0000000000000001 /* CursorProvider.swift */; };
 		A10000100000000000000001 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A10003010000000000000001 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -41,6 +42,7 @@
 		A100020B0000000000000001 /* ProviderClients.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProviderClients.swift; sourceTree = "<group>"; };
 		A100020C0000000000000001 /* ProviderStatusController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProviderStatusController.swift; sourceTree = "<group>"; };
 		A100020D0000000000000001 /* SupportUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportUtilities.swift; sourceTree = "<group>"; };
+		A100020E0000000000000001 /* CursorProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CursorProvider.swift; sourceTree = "<group>"; };
 		A10003010000000000000001 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A10003020000000000000001 /* clawd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = assets/clawd.png; sourceTree = "<group>"; };
 		A10003030000000000000001 /* codex-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = assets/codex-icon.png; sourceTree = "<group>"; };
@@ -80,6 +82,7 @@
 				A10002050000000000000001 /* CodexOAuth.swift */,
 				A10002060000000000000001 /* CodexRPC.swift */,
 				A10002070000000000000001 /* CodexStatus.swift */,
+				A100020E0000000000000001 /* CursorProvider.swift */,
 				A10002080000000000000001 /* CombinedStatusController.swift */,
 				A10002090000000000000001 /* CoreTypes.swift */,
 				A100020A0000000000000001 /* MeterUI.swift */,
@@ -195,6 +198,7 @@
 				A100000D0000000000000001 /* ProviderClients.swift in Sources */,
 				A100000E0000000000000001 /* ProviderStatusController.swift in Sources */,
 				A100000F0000000000000001 /* SupportUtilities.swift in Sources */,
+				A10000110000000000000001 /* CursorProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

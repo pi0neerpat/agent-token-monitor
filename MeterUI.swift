@@ -37,12 +37,14 @@ final class MeterBarView: NSView {
         let clamped = max(0.0, min(1.0, progress))
         let fillRect = NSRect(x: rect.minX, y: rect.minY, width: rect.width * clamped, height: rect.height)
         if fillRect.width > 0 {
-            let fillPath = NSBezierPath(roundedRect: fillRect, xRadius: rect.height / 2, yRadius: rect.height / 2)
+            NSGraphicsContext.saveGraphicsState()
+            bgPath.addClip()
             let fillGradient = NSGradient(colors: [
                 NSColor(calibratedRed: 0.10, green: 0.60, blue: 0.98, alpha: 1.0),
                 NSColor(calibratedRed: 0.03, green: 0.44, blue: 0.90, alpha: 1.0)
             ])
-            fillGradient?.draw(in: fillPath, angle: 0)
+            fillGradient?.draw(in: fillRect, angle: 0)
+            NSGraphicsContext.restoreGraphicsState()
         }
 
         let paragraph = NSMutableParagraphStyle()
@@ -330,6 +332,13 @@ final class CombinedStatusItemView: NSView {
         }
     }
 
+    var cursorState: MeterState = .loading {
+        didSet {
+            cursorView.state = cursorState
+            onSizeChange?()
+        }
+    }
+
     var claudeVisible: Bool = true {
         didSet {
             guard claudeVisible != oldValue else { return }
@@ -344,12 +353,20 @@ final class CombinedStatusItemView: NSView {
         }
     }
 
+    var cursorVisible: Bool = true {
+        didSet {
+            guard cursorVisible != oldValue else { return }
+            updateVisibility()
+        }
+    }
+
     var hasVisibleProviders: Bool {
-        claudeVisible || codexVisible
+        claudeVisible || codexVisible || cursorVisible
     }
 
     private let claudeView: CompactProviderStatusView
     private let codexView: CompactProviderStatusView
+    private let cursorView: CompactProviderStatusView
     private let stackView = NSStackView()
 
     override var intrinsicContentSize: NSSize {
@@ -357,12 +374,14 @@ final class CombinedStatusItemView: NSView {
         return NSSize(width: ceil(size.width), height: 22)
     }
 
-    init(claudeIcon: NSImage?, codexIcon: NSImage?) {
+    init(claudeIcon: NSImage?, codexIcon: NSImage?, cursorIcon: NSImage?) {
         self.claudeView = CompactProviderStatusView(icon: claudeIcon)
         self.codexView = CompactProviderStatusView(icon: codexIcon)
-        super.init(frame: NSRect(x: 0, y: 0, width: 160, height: 22))
+        self.cursorView = CompactProviderStatusView(icon: cursorIcon)
+        super.init(frame: NSRect(x: 0, y: 0, width: 220, height: 22))
         translatesAutoresizingMaskIntoConstraints = false
         codexView.loadingIconColor = NSColor(calibratedWhite: 0.96, alpha: 0.98)
+        cursorView.loadingIconColor = NSColor(calibratedWhite: 0.96, alpha: 0.98)
         configureSubviews()
     }
 
@@ -377,8 +396,10 @@ final class CombinedStatusItemView: NSView {
     private func configureSubviews() {
         claudeView.translatesAutoresizingMaskIntoConstraints = false
         codexView.translatesAutoresizingMaskIntoConstraints = false
+        cursorView.translatesAutoresizingMaskIntoConstraints = false
         claudeView.onSizeChange = { [weak self] in self?.onSizeChange?() }
         codexView.onSizeChange = { [weak self] in self?.onSizeChange?() }
+        cursorView.onSizeChange = { [weak self] in self?.onSizeChange?() }
 
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.orientation = .horizontal
@@ -386,6 +407,7 @@ final class CombinedStatusItemView: NSView {
         stackView.spacing = 8
         stackView.addArrangedSubview(claudeView)
         stackView.addArrangedSubview(codexView)
+        stackView.addArrangedSubview(cursorView)
         addSubview(stackView)
 
         NSLayoutConstraint.activate([
@@ -401,6 +423,7 @@ final class CombinedStatusItemView: NSView {
     private func updateVisibility() {
         claudeView.isHidden = !claudeVisible
         codexView.isHidden = !codexVisible
+        cursorView.isHidden = !cursorVisible
         invalidateIntrinsicContentSize()
         needsLayout = true
         layoutSubtreeIfNeeded()
