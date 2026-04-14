@@ -8,6 +8,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     @MainActor
     func applicationDidFinishLaunching(_ notification: Notification) {
+        NSSetUncaughtExceptionHandler { exception in
+            let msg = "Uncaught exception: \(exception.name.rawValue) — \(exception.reason ?? "no reason") — \(exception.callStackSymbols.joined(separator: "\n"))"
+            DiagnosticsLogger.shared.log(msg)
+        }
         logger.log("Application launched")
         setupProviders()
         refreshAllProviders()

@@ -232,8 +232,8 @@ final class CodexRPCClient {
 
     private func sendPayload(_ payload: [String: Any]) throws {
         let data = try JSONSerialization.data(withJSONObject: payload)
-        stdinPipe.fileHandleForWriting.write(data)
-        stdinPipe.fileHandleForWriting.write(Data([0x0A]))
+        try stdinPipe.fileHandleForWriting.write(contentsOf: data)
+        try stdinPipe.fileHandleForWriting.write(contentsOf: Data([0x0A]))
     }
 
     private func readNextMessage() async throws -> [String: Any] {
