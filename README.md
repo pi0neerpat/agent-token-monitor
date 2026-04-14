@@ -5,11 +5,11 @@
     <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT">
   </a>
   <br/>
-Monitor your Claude and Codex subs with a lightweight macOS taskbar item.
+Monitor your Claude, Codex, and Cursor subs with a lightweight macOS taskbar item.
 </p>
 
 <p align="center">
-<img src="./screenshot-4.png" alt="Agent Token Monitor in action" width="500">
+<img width="696" height="1062" alt="image" src="https://github.com/user-attachments/assets/b28e3724-00f4-4154-9f9d-5c810c3f5283" />
 </p>
 
 ## Install
