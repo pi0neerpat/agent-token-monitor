@@ -175,7 +175,6 @@ final class PassThroughStatusView: NSView {
 
         invalidateIntrinsicContentSize()
         needsLayout = true
-        layoutSubtreeIfNeeded()
         onSizeChange?()
     }
 
@@ -296,7 +295,6 @@ final class CompactProviderStatusView: NSView {
 
         invalidateIntrinsicContentSize()
         needsLayout = true
-        layoutSubtreeIfNeeded()
         onSizeChange?()
     }
 
@@ -426,7 +424,6 @@ final class CombinedStatusItemView: NSView {
         cursorView.isHidden = !cursorVisible
         invalidateIntrinsicContentSize()
         needsLayout = true
-        layoutSubtreeIfNeeded()
         onSizeChange?()
     }
 
