@@ -60,7 +60,7 @@ final class CombinedStatusController: NSObject {
         setClaudeEnabled(claudeEnabled, persist: false)
         setCodexEnabled(codexEnabled, persist: false)
         setCursorEnabled(cursorEnabled, persist: false)
-        setCodexAccessEnabled(CodexAuthAccess.hasAuthorizedFile())
+        setCodexAccessEnabled(CodexAuthAccess.canReadCredentials())
     }
 
     func refreshAll() {
