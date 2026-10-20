@@ -87,7 +87,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let alert = NSAlert()
         alert.messageText = "Enable Codex"
         alert.informativeText = """
-        Agent Token Monitor is sandboxed, so macOS requires one-time permission before it can read your Codex credentials. The next panel will ask you to choose your Codex auth file, usually \(authURL.path).
+        Agent Token Monitor needs to know where your Codex credentials live. The next panel will ask you to choose your Codex auth file, usually \(authURL.path).
 
         The app stores a security-scoped bookmark for that file and only uses it to read Codex usage data.
         """
@@ -102,7 +102,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let panel = NSOpenPanel()
         panel.title = "Choose Codex auth.json"
         panel.message = "Select the Codex auth.json file to enable Codex usage tracking."
-        panel.prompt = "Grant Access"
+        panel.prompt = CodexAuthAccess.usesDirectAccess() ? "Choose" : "Grant Access"
         panel.canChooseFiles = true
         panel.canChooseDirectories = false
         panel.allowsMultipleSelection = false

@@ -117,7 +117,7 @@ enum CodexOAuthCredentialsStore {
         if (nsError.domain == NSCocoaErrorDomain && nsError.code == NSFileReadNoPermissionError)
             || (nsError.domain == NSPOSIXErrorDomain && (nsError.code == Int(EACCES) || nsError.code == Int(EPERM))) {
             return .authorizationRequired(
-                "Codex auth.json exists but this sandboxed app cannot read it yet. Use “Enable Codex…” in the Codex menu and choose \(url.path)."
+                "Codex auth.json exists but this app cannot read it yet. Use “Enable Codex…” in the Codex menu and choose \(url.path)."
             )
         }
 

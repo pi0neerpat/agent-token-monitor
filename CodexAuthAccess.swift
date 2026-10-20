@@ -36,6 +36,22 @@ enum CodexAuthAccess {
         UserDefaults.standard.data(forKey: bookmarkKey) != nil
     }
 
+    // Unsandboxed builds can read auth.json directly, so a bookmark is only
+    // needed when the default path isn't readable (e.g. a custom location).
+    static func canReadCredentials() -> Bool {
+        hasAuthorizedFile() || isDefaultAuthFileReadable()
+    }
+
+    // True when Codex works purely through direct reads, with no bookmark
+    // authorization involved.
+    static func usesDirectAccess() -> Bool {
+        !hasAuthorizedFile() && isDefaultAuthFileReadable()
+    }
+
+    private static func isDefaultAuthFileReadable() -> Bool {
+        FileManager.default.isReadableFile(atPath: defaultAuthFileURL().path)
+    }
+
     static func authorize(url: URL) throws {
         guard url.lastPathComponent == "auth.json" else {
             throw CodexAuthAccessError.invalidSelection("Choose the Codex auth.json file to enable Codex.")

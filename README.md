@@ -28,7 +28,9 @@ You'll need to grant the app permission to access your Claude Oauth token.
 
 <img src="./permissions.png" alt="Agent Token Monitor permissions prompt" width="500">
 
-And for Codex, we only need access to auth.json. Otherwise the app is sandboxed.
+For Codex, the app reads `~/.codex/auth.json` directly (or `$CODEX_HOME/auth.json`). If yours lives somewhere else, use **Enable Codex…** in the Codex menu to point the app at it.
+
+> **Why isn't the app sandboxed?** On Macs low on disk space, macOS force-quits sandboxed menu-bar apps while it frees up storage, so a sandboxed version would quit without warning every few minutes. The app reads local credentials and account metadata, then retrieves usage from the Claude, Codex, and Cursor services; Codex may use your installed CLI as a fallback.
 
 ## Usage
 

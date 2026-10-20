@@ -44,10 +44,9 @@ APPLE_TEAM_ID="${APPLE_TEAM_ID:-}"
 
 trap 'rm -rf "$MODULE_CACHE"' EXIT
 
-if [[ "$SIGNING_MODE" != "test" && "$SIGNING_MODE" != "sandbox" && "$SIGNING_MODE" != "release" ]]; then
-    echo "Usage: ./release.sh [test|sandbox|release]"
-    echo "  test     Build a tester-friendly ad-hoc app without sandbox entitlements."
-    echo "  sandbox  Build an ad-hoc app with sandbox entitlements for local validation."
+if [[ "$SIGNING_MODE" != "test" && "$SIGNING_MODE" != "release" ]]; then
+    echo "Usage: ./release.sh [test|release]"
+    echo "  test     Build a tester-friendly ad-hoc app."
     echo "  release  Build, Developer ID sign, notarize, and staple a distributable DMG."
     exit 1
 fi
@@ -165,13 +164,22 @@ if [[ "$SIGNING_MODE" == "release" ]]; then
         --timestamp \
         --entitlements "$SCRIPT_DIR/entitlements.plist" \
         "$APP_DIR"
-elif [[ "$SIGNING_MODE" == "sandbox" ]]; then
-    codesign \
-        --force \
-        --sign - \
-        --requirements "$DESIGNATED_REQUIREMENT" \
-        --entitlements "$SCRIPT_DIR/entitlements.plist" \
-        "$APP_DIR"
+
+    # Notarize and staple the .app BEFORE it is copied into the DMG so the
+    # bundle users drag out already carries an embedded notarization ticket.
+    # Without this, Gatekeeper's offline re-check (after sleep/wake or network
+    # blips) fails and the app is killed silently by taskgated/securityd.
+    NOTARIZE_ZIP="$DIST_DIR/AgentTokenMonitor-notarize.zip"
+    /bin/rm -f "$NOTARIZE_ZIP"
+    /usr/bin/ditto -c -k --keepParent "$APP_DIR" "$NOTARIZE_ZIP"
+    xcrun notarytool submit "$NOTARIZE_ZIP" \
+        --apple-id "$APPLE_ID" \
+        --password "$APPLE_ID_PASSWORD" \
+        --team-id "$APPLE_TEAM_ID" \
+        --wait
+    /bin/rm -f "$NOTARIZE_ZIP"
+    xcrun stapler staple "$APP_DIR"
+    xcrun stapler validate "$APP_DIR"
 else
     codesign \
         --force \
@@ -255,7 +263,6 @@ if [[ "$SIGNING_MODE" == "release" ]]; then
         --team-id "$APPLE_TEAM_ID" \
         --wait
 
-    xcrun stapler staple "$APP_DIR"
     xcrun stapler staple "$DMG_PATH"
 fi
 
@@ -265,11 +272,8 @@ echo "  App: $APP_DIR"
 echo "  DMG: $DMG_PATH"
 echo
 if [[ "$SIGNING_MODE" == "test" ]]; then
-    echo "Note: this is an ad-hoc tester build without sandbox entitlements."
+    echo "Note: this is an ad-hoc tester build."
     echo "On another Mac, Gatekeeper may still require Open Anyway because the app is not notarized."
-elif [[ "$SIGNING_MODE" == "release" ]]; then
-    echo "Note: this build is Developer ID signed, notarized, and stapled for distribution."
 else
-    echo "Note: this build includes sandbox entitlements but is still ad-hoc signed."
-    echo "It is useful for local validation, not for distribution."
+    echo "Note: this build is Developer ID signed, notarized, and stapled for distribution."
 fi
