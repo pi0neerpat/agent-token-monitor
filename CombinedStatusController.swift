@@ -101,7 +101,13 @@ final class CombinedStatusController: NSObject {
 
     func setCodexAccessEnabled(_ enabled: Bool) {
         codexAccessEnabled = enabled
-        codexAuthorizeItem.title = enabled ? "Reauthorize Codex…" : "Enable Codex Access…"
+        if !enabled {
+            codexAuthorizeItem.title = "Enable Codex Access…"
+        } else if CodexAuthAccess.usesDirectAccess() {
+            codexAuthorizeItem.title = "Choose Codex auth.json…"
+        } else {
+            codexAuthorizeItem.title = "Reauthorize Codex…"
+        }
         updateProviderVisibility()
         if enabled {
             codexCurrentItem.title = "Current session: loading…"

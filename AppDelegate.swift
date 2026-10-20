@@ -102,7 +102,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let panel = NSOpenPanel()
         panel.title = "Choose Codex auth.json"
         panel.message = "Select the Codex auth.json file to enable Codex usage tracking."
-        panel.prompt = "Grant Access"
+        panel.prompt = CodexAuthAccess.usesDirectAccess() ? "Choose" : "Grant Access"
         panel.canChooseFiles = true
         panel.canChooseDirectories = false
         panel.allowsMultipleSelection = false
