@@ -15,7 +15,7 @@ reportType:None maxTerminationResistance:NonInteractive ...>
 Observed 6 times in under an hour, every single time targeting this app and no other:
 `13:07:31, 13:12:38, 13:18:07, 13:33:48, 13:39:05, 13:55:00`.
 
-No `.ips` crash report is ever generated (confirms it's an external kill, not a
+No `.ips` crash report is ever generated; this is consistent with an external kill, while the RunningBoard termination context above identifies the cause.
 Swift trap/exception/segfault). `NSSetUncaughtExceptionHandler` never fires because
 there's nothing to catch — the process is terminated directly by `runningboardd`.
 
